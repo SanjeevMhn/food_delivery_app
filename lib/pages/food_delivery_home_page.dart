@@ -10,7 +10,14 @@ import 'package:food_delivery/widgets/top_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class FoodDeliveryHomePage extends StatelessWidget {
+class FoodDeliveryHomePage extends StatefulWidget {
+  const FoodDeliveryHomePage({super.key});
+
+  @override
+  State<FoodDeliveryHomePage> createState() => _FoodDeliveryHomePageState();
+}
+
+class _FoodDeliveryHomePageState extends State<FoodDeliveryHomePage> {
   List<BestSeller> bestSellers = [
     BestSeller(id: 1, price: 110.35, image: 'assets/images/pancakes.jpg'),
     BestSeller(id: 2, price: 50.25, image: 'assets/images/chowmein.jpg'),
@@ -53,7 +60,21 @@ class FoodDeliveryHomePage extends StatelessWidget {
     ),
   ];
 
-  FoodDeliveryHomePage({super.key});
+  void toggleActive(int id) {
+    setState(() {
+      List<BotMenuModel> newBotMenu = botMenus.map((item) {
+        return BotMenuModel(
+          id: item.id,
+          icon: item.icon,
+          label: item.label,
+          isActive: false,
+        );
+      }).toList();
+      botMenus = newBotMenu;
+      var item = botMenus.firstWhere((item) => item.id == id);
+      item.isActive = !item.isActive;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,124 +137,141 @@ class FoodDeliveryHomePage extends StatelessWidget {
               Container(
                 color: Color.fromRGBO(245, 203, 88, 1),
                 child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 25.r,
-                    vertical: 30.r,
-                  ),
+                  padding: EdgeInsets.only(left: 25.r, right: 25.r, top: 30.r),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(50.r),
                       topRight: Radius.circular(50.r),
                     ),
-                    color: Colors.white,
+                    color: botMenus.any((item) => item.isActive == true)
+                        ? Color.fromRGBO(233, 83, 34, 1)
+                        : Colors.white,
                   ),
                   child: Column(
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: botMenus
-                            .map((item) => BotMenu(botMenu: item))
+                            .map(
+                              (item) => GestureDetector(
+                                onTap: () => toggleActive(item.id),
+                                child: BotMenu(botMenu: item),
+                              ),
+                            )
                             .toList(),
-                      ),
-
-                      SizedBox(height: 10.h),
-                      Divider(color: Color.fromRGBO(233, 83, 34, 1)),
-                      SizedBox(height: 10.h),
-                      Column(
-                        spacing: 10.r,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Best Seller",
-                                style: TextStyle(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromRGBO(57, 23, 19, 1),
-                                ),
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "View All",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color.fromRGBO(233, 83, 34, 1),
-                                    ),
-                                  ),
-                                  Icon(
-                                    Icons.chevron_right,
-                                    color: Color.fromRGBO(57, 49, 47, 1),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 120.h,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: bestSellers.length,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: EdgeInsets.only(right: 15.r),
-                                  child: BestSellerCard(
-                                    bestSeller: bestSellers[index],
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 30.h),
-                      ThirtyPercentOffAd(),
-                      SizedBox(height: 30.h),
-                      Column(
-                        spacing: 20.r,
-                        children: [
-                          Container(
-                            alignment: AlignmentGeometry.centerLeft,
-                            child: Text(
-                              "Recommended",
-                              style: TextStyle(
-                                fontSize: 20.sp,
-                                color: Color.fromRGBO(57, 23, 19, 1),
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.start,
-                            ),
-                          ),
-                          GridView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 10,
-                                  mainAxisSpacing: 10,
-                                  childAspectRatio: 1.0,
-                                ),
-                            itemCount: recommededItems.length,
-                            itemBuilder: (context, index) {
-                              return RecommededItem(
-                                item: recommededItems[index],
-                              );
-                            },
-                          ),
-                        ],
                       ),
                     ],
                   ),
                 ),
               ),
+              homePage(bestSellers, recommededItems),
             ],
           ),
         ],
       ),
     );
   }
+}
+
+Widget homePage(
+  List<BestSeller> bestSellers,
+  List<RecommededItemModel> recommededItems,
+) {
+  return Container(
+    // color: Color.fromRGBO(233, 83, 34, 1),
+    color: Colors.white,
+    child: Container(
+      padding: EdgeInsets.only(left: 25.r, right: 25.r, top: 30.r),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(topRight: Radius.circular(50.r)),
+      ),
+      child: Column(
+        children: [
+          Column(
+            spacing: 10.r,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Best Seller",
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromRGBO(57, 23, 19, 1),
+                    ),
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "View All",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromRGBO(233, 83, 34, 1),
+                        ),
+                      ),
+                      Icon(
+                        Icons.chevron_right,
+                        color: Color.fromRGBO(57, 49, 47, 1),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 120.h,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: bestSellers.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.only(right: 15.r),
+                      child: BestSellerCard(bestSeller: bestSellers[index]),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 30.h),
+          ThirtyPercentOffAd(),
+          SizedBox(height: 30.h),
+          Column(
+            spacing: 20.r,
+            children: [
+              Container(
+                alignment: AlignmentGeometry.centerLeft,
+                child: Text(
+                  "Recommended",
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    color: Color.fromRGBO(57, 23, 19, 1),
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
+              ),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio: 1.0,
+                ),
+                itemCount: recommededItems.length,
+                itemBuilder: (context, index) {
+                  return RecommededItem(item: recommededItems[index]);
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
 }
