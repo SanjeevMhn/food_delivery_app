@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_delivery/models/best_seller.dart';
 
 class BestSellerCard extends StatelessWidget {
-  final String image;
-  final double price;
-  const BestSellerCard({super.key, required this.image, required this.price});
+  final BestSeller bestSeller;
+  const BestSellerCard({super.key, required this.bestSeller});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class BestSellerCard extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(25.r)),
           child: Image.asset(
-            image,
+            bestSeller.image,
             fit: BoxFit.cover,
             width: 75.w,
             height: 120.h,
@@ -32,7 +32,7 @@ class BestSellerCard extends StatelessWidget {
               ),
             ),
             child: Text(
-              '\$$price',
+              '\$${bestSeller.price}',
               style: TextStyle(color: Colors.white, fontSize: 12),
             ),
           ),

@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_delivery/models/recommeded_item_model.dart';
 
 class RecommededItem extends StatelessWidget {
-  final String image;
-  final double price;
-  final double rating;
-
-  const RecommededItem({
-    super.key,
-    required this.image,
-    required this.price,
-    required this.rating,
-  });
+  final RecommededItemModel item;
+  const RecommededItem({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +15,10 @@ class RecommededItem extends StatelessWidget {
           height: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25.r),
-            image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover)
+            image: DecorationImage(
+              image: AssetImage(item.image),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         Positioned(
@@ -35,11 +31,11 @@ class RecommededItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(100.r),
             ),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              spacing: 4.r,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 2.r,
               children: [
                 Text(
-                  rating.toStringAsFixed(1),
+                  item.rating.toStringAsFixed(1),
                   style: TextStyle(
                     fontSize: 12.sp,
                     color: Color.fromRGBO(57, 23, 10, 1),
@@ -67,7 +63,7 @@ class RecommededItem extends StatelessWidget {
               ),
             ),
             child: Text(
-              '\$${price.toStringAsFixed(2)}',
+              '\$${item.price.toStringAsFixed(2)}',
               style: TextStyle(color: Colors.white, fontSize: 12),
             ),
           ),

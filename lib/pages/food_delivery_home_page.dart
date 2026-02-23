@@ -1,7 +1,9 @@
-import 'package:food_delivery/widgets/adverts/30_percent_off.dart';
+import 'package:food_delivery/models/best_seller.dart';
+import 'package:food_delivery/models/recommeded_item_model.dart';
+import 'package:food_delivery/widgets/adverts/thirty_percent_off.dart';
 import 'package:food_delivery/widgets/best_seller_card.dart';
 import 'package:food_delivery/widgets/bot_menu.dart';
-import 'package:food_delivery/widgets/carousel.dart';
+import 'package:food_delivery/models/bot_menu_model.dart';
 import 'package:food_delivery/widgets/recommeded_item.dart';
 import 'package:food_delivery/widgets/search_input.dart';
 import 'package:food_delivery/widgets/top_menu.dart';
@@ -9,7 +11,50 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FoodDeliveryHomePage extends StatelessWidget {
-  const FoodDeliveryHomePage({super.key});
+  List<BestSeller> bestSellers = [
+    BestSeller(id: 1, price: 110.35, image: 'assets/images/pancakes.jpg'),
+    BestSeller(id: 2, price: 50.25, image: 'assets/images/chowmein.jpg'),
+    BestSeller(id: 3, price: 12.99, image: 'assets/images/food.jpg'),
+    BestSeller(id: 4, price: 8.25, image: 'assets/images/food_2.jpg'),
+    BestSeller(id: 5, price: 28.25, image: 'assets/images/pizza.png'),
+  ];
+
+  List<BotMenuModel> botMenus = [
+    BotMenuModel(id: 1, icon: Icons.lunch_dining_outlined, label: "Snack"),
+    BotMenuModel(id: 2, icon: Icons.restaurant_outlined, label: "Meal"),
+    BotMenuModel(id: 3, icon: Icons.cake_outlined, label: "Desserts"),
+    BotMenuModel(id: 4, icon: Icons.local_bar_outlined, label: "Drinks"),
+  ];
+
+  List<RecommededItemModel> recommededItems = [
+    RecommededItemModel(
+      id: 1,
+      image: 'assets/images/rec_1.jpg',
+      price: 12.50,
+      rating: 5.0,
+    ),
+    RecommededItemModel(
+      id: 2,
+      image: 'assets/images/rec_2.jpg',
+      price: 120.10,
+      rating: 4.2,
+    ),
+    RecommededItemModel(
+      id: 3,
+      image: 'assets/images/rec_3.jpg',
+      price: 45.50,
+      rating: 4.8,
+    ),
+    RecommededItemModel(
+      id: 4,
+      image: 'assets/images/rec_4.jpg',
+      price: 25.65,
+      rating: 5.0,
+    ),
+  ];
+
+  FoodDeliveryHomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -86,25 +131,9 @@ class FoodDeliveryHomePage extends StatelessWidget {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          BotMenu(
-                            icon: Icons.lunch_dining_outlined,
-                            label: "Snack",
-                          ),
-                          BotMenu(
-                            icon: Icons.restaurant_outlined,
-                            label: "Meal",
-                          ),
-                          BotMenu(
-                            icon: Icons.local_florist_outlined,
-                            label: "Vegan",
-                          ),
-                          BotMenu(icon: Icons.cake_outlined, label: "Dessert"),
-                          BotMenu(
-                            icon: Icons.local_bar_outlined,
-                            label: "Drinks",
-                          ),
-                        ],
+                        children: botMenus
+                            .map((item) => BotMenu(botMenu: item))
+                            .toList(),
                       ),
 
                       SizedBox(height: 10.h),
@@ -137,35 +166,25 @@ class FoodDeliveryHomePage extends StatelessWidget {
                                   ),
                                   Icon(
                                     Icons.chevron_right,
-                                    color: Color.fromRGBO(233, 83, 34, 1),
+                                    color: Color.fromRGBO(57, 49, 47, 1),
                                   ),
                                 ],
                               ),
                             ],
                           ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              spacing: 15.r,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                BestSellerCard(
-                                  image: 'assets/images/pancakes.jpg',
-                                  price: 110.35,
-                                ),
-                                BestSellerCard(
-                                  image: 'assets/images/chowmein.jpg',
-                                  price: 50.25,
-                                ),
-                                BestSellerCard(
-                                  image: 'assets/images/food.jpg',
-                                  price: 12.99,
-                                ),
-                                BestSellerCard(
-                                  image: 'assets/images/food_2.jpg',
-                                  price: 8.25,
-                                ),
-                              ],
+                          SizedBox(
+                            height: 120.h,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: bestSellers.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: EdgeInsets.only(right: 15.r),
+                                  child: BestSellerCard(
+                                    bestSeller: bestSellers[index],
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ],
@@ -188,36 +207,22 @@ class FoodDeliveryHomePage extends StatelessWidget {
                               textAlign: TextAlign.start,
                             ),
                           ),
-
-                          GridView.count(
-                            primary: false,
-                            crossAxisSpacing: 8.r,
-                            mainAxisSpacing: 8.r,
-                            crossAxisCount: 2,
+                          GridView.builder(
                             shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            children: [
-                              RecommededItem(
-                                image: 'assets/images/rec_1.jpg',
-                                price: 12.50,
-                                rating: 5.0,
-                              ),
-                              RecommededItem(
-                                image: 'assets/images/rec_2.jpg',
-                                price: 120.10,
-                                rating: 4.0,
-                              ),
-                              RecommededItem(
-                                image: 'assets/images/rec_3.jpg',
-                                price: 45.50,
-                                rating: 4.8,
-                              ),
-                              RecommededItem(
-                                image: 'assets/images/rec_4.jpg',
-                                price: 25.0,
-                                rating: 5.0,
-                              ),
-                            ],
+                            physics: NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 10,
+                                  mainAxisSpacing: 10,
+                                  childAspectRatio: 1.0,
+                                ),
+                            itemCount: recommededItems.length,
+                            itemBuilder: (context, index) {
+                              return RecommededItem(
+                                item: recommededItems[index],
+                              );
+                            },
                           ),
                         ],
                       ),

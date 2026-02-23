@@ -7,7 +7,7 @@ class FoodDeliveryBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(8.r),
+      padding: EdgeInsets.all(15.r),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(100.r),
         child: BottomNavigationBar(
