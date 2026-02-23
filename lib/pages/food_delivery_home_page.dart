@@ -29,9 +29,9 @@ class _FoodDeliveryHomePageState extends State<FoodDeliveryHomePage> {
   List<BotMenuModel> botMenus = [
     BotMenuModel(id: 1, icon: Icons.lunch_dining_outlined, label: "Snack"),
     BotMenuModel(id: 2, icon: Icons.restaurant_outlined, label: "Meal"),
-    BotMenuModel(id: 2, icon: Icons.local_florist_outlined, label: "Vegan"),
-    BotMenuModel(id: 3, icon: Icons.cake_outlined, label: "Desserts"),
-    BotMenuModel(id: 4, icon: Icons.local_bar_outlined, label: "Drinks"),
+    BotMenuModel(id: 3, icon: Icons.local_florist_outlined, label: "Vegan"),
+    BotMenuModel(id: 4, icon: Icons.cake_outlined, label: "Desserts"),
+    BotMenuModel(id: 5, icon: Icons.local_bar_outlined, label: "Drinks"),
   ];
 
   List<RecommededItemModel> recommededItems = [
