@@ -61,6 +61,8 @@ class _FoodDeliveryHomePageState extends State<FoodDeliveryHomePage> {
     ),
   ];
 
+  var activeBotMenu;
+
   void toggleActive(int id) {
     setState(() {
       List<BotMenuModel> newBotMenu = botMenus.map((item) {
@@ -74,6 +76,7 @@ class _FoodDeliveryHomePageState extends State<FoodDeliveryHomePage> {
       botMenus = newBotMenu;
       var item = botMenus.firstWhere((item) => item.id == id);
       item.isActive = !item.isActive;
+      activeBotMenu = item.id;
     });
   }
 
