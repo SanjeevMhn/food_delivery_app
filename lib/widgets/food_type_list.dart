@@ -29,13 +29,14 @@ class FoodTypeList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Padding(
+      child: Container(
         padding: EdgeInsets.only(
           top: 30.r,
           left: 25.r,
           right: 25.r,
           bottom: 25.r,
         ),
+        color: Colors.white,
         child: Column(
           children: [
             Row(

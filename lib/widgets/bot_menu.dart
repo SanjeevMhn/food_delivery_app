@@ -39,7 +39,7 @@ class BotMenu extends StatelessWidget {
               child: Icon(
                 botMenu.icon,
                 color: Color.fromRGBO(233, 83, 34, 1),
-                size: 50.r,
+                size: 40.r
               ),
             ),
             Text(
