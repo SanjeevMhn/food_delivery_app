@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery/custom_shapes/active_rounded_menu.dart';
 import 'package:food_delivery/models/bot_menu_model.dart';
+import 'package:food_delivery/state/bot_menu_state.dart';
+import 'package:provider/provider.dart';
 
 class BotMenu extends StatelessWidget {
   final BotMenuModel botMenu;
@@ -10,6 +12,7 @@ class BotMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hasActiveMenu = context.watch<BotMenuState>().hasActiveBotMenu();
     return CustomPaint(
       painter: botMenu.isActive ? ActiveRoundedMenu(color: Colors.white) : null,
       child: Container(
@@ -43,7 +46,11 @@ class BotMenu extends StatelessWidget {
               botMenu.label,
               style: TextStyle(
                 fontSize: 12.sp,
-                color: Color.fromRGBO(57, 23, 19, 1),
+                color: botMenu.isActive
+                    ? Color.fromRGBO(57, 23, 19, 1)
+                    : hasActiveMenu
+                    ? Colors.white
+                    : Color.fromRGBO(57, 23, 19, 1),
               ),
             ),
           ],

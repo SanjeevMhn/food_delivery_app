@@ -25,13 +25,13 @@ class RecommededItem extends StatelessWidget {
           top: 10.r,
           left: 15.r,
           child: Container(
-            padding: EdgeInsets.all(5.r),
+            padding: EdgeInsets.symmetric(vertical: 5.r, horizontal: 8.r),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(100.r),
             ),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
               spacing: 2.r,
               children: [
                 Text(
@@ -44,7 +44,7 @@ class RecommededItem extends StatelessWidget {
                 Icon(
                   Icons.star_rounded,
                   color: Color.fromRGBO(244, 186, 27, 1),
-                  size: 20.r,
+                  size: 20.sp,
                 ),
               ],
             ),

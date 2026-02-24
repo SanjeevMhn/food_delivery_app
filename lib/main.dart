@@ -1,12 +1,19 @@
 import 'package:food_delivery/pages/food_delivery_home_page.dart';
+import 'package:food_delivery/state/bot_menu_state.dart';
 // import 'package:expense_tracker/pages/home_page.dart';
 // import 'package:expense_tracker/widgets/bottom_navigator.dart';
 import 'package:food_delivery/widgets/food_delivery_bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => BotMenuState(),
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -26,7 +33,7 @@ class MainApp extends StatelessWidget {
               // body: HomePage(),
               body: FoodDeliveryHomePage(),
               // bottomNavigationBar: BottomNavigator()
-              bottomNavigationBar: FoodDeliveryBottomNav() 
+              bottomNavigationBar: FoodDeliveryBottomNav(),
             ),
           ),
         );

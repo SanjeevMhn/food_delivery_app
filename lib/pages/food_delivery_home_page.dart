@@ -1,14 +1,17 @@
 import 'package:food_delivery/models/best_seller.dart';
 import 'package:food_delivery/models/recommeded_item_model.dart';
+import 'package:food_delivery/state/bot_menu_state.dart';
 import 'package:food_delivery/widgets/adverts/thirty_percent_off.dart';
 import 'package:food_delivery/widgets/best_seller_card.dart';
 import 'package:food_delivery/widgets/bot_menu.dart';
 import 'package:food_delivery/models/bot_menu_model.dart';
+import 'package:food_delivery/widgets/food_type_list.dart';
 import 'package:food_delivery/widgets/recommeded_item.dart';
 import 'package:food_delivery/widgets/search_input.dart';
 import 'package:food_delivery/widgets/top_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class FoodDeliveryHomePage extends StatefulWidget {
   const FoodDeliveryHomePage({super.key});
@@ -24,14 +27,6 @@ class _FoodDeliveryHomePageState extends State<FoodDeliveryHomePage> {
     BestSeller(id: 3, price: 12.99, image: 'assets/images/food.jpg'),
     BestSeller(id: 4, price: 8.25, image: 'assets/images/food_2.jpg'),
     BestSeller(id: 5, price: 28.25, image: 'assets/images/pizza.png'),
-  ];
-
-  List<BotMenuModel> botMenus = [
-    BotMenuModel(id: 1, icon: Icons.lunch_dining_outlined, label: "Snack"),
-    BotMenuModel(id: 2, icon: Icons.restaurant_outlined, label: "Meal"),
-    BotMenuModel(id: 3, icon: Icons.local_florist_outlined, label: "Vegan"),
-    BotMenuModel(id: 4, icon: Icons.cake_outlined, label: "Desserts"),
-    BotMenuModel(id: 5, icon: Icons.local_bar_outlined, label: "Drinks"),
   ];
 
   List<RecommededItemModel> recommededItems = [
@@ -61,27 +56,12 @@ class _FoodDeliveryHomePageState extends State<FoodDeliveryHomePage> {
     ),
   ];
 
-  var activeBotMenu;
-
-  void toggleActive(int id) {
-    setState(() {
-      List<BotMenuModel> newBotMenu = botMenus.map((item) {
-        return BotMenuModel(
-          id: item.id,
-          icon: item.icon,
-          label: item.label,
-          isActive: false,
-        );
-      }).toList();
-      botMenus = newBotMenu;
-      var item = botMenus.firstWhere((item) => item.id == id);
-      item.isActive = !item.isActive;
-      activeBotMenu = item.id;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    final botMenus = context.watch<BotMenuState>().botMenus;
+    final activeBotMenu = context.watch<BotMenuState>().currentActiveBotMenu();
+    final hasActiveBotMenu = context.watch<BotMenuState>().hasActiveBotMenu();
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -147,7 +127,7 @@ class _FoodDeliveryHomePageState extends State<FoodDeliveryHomePage> {
                       topLeft: Radius.circular(50.r),
                       topRight: Radius.circular(50.r),
                     ),
-                    color: botMenus.any((item) => item.isActive == true)
+                    color: hasActiveBotMenu
                         ? Color.fromRGBO(233, 83, 34, 1)
                         : Colors.white,
                   ),
@@ -158,7 +138,9 @@ class _FoodDeliveryHomePageState extends State<FoodDeliveryHomePage> {
                         children: botMenus
                             .map(
                               (item) => GestureDetector(
-                                onTap: () => toggleActive(item.id),
+                                onTap: () => context
+                                    .read<BotMenuState>()
+                                    .setActiveBotMenu(item.id),
                                 child: BotMenu(botMenu: item),
                               ),
                             )
@@ -168,7 +150,15 @@ class _FoodDeliveryHomePageState extends State<FoodDeliveryHomePage> {
                   ),
                 ),
               ),
-              homePage(bestSellers, recommededItems),
+
+              switch (activeBotMenu) {
+                'Snack'    => FoodTypeList(food_type: 'Snack'),
+                'Meal'     => FoodTypeList(food_type: 'Meal'),
+                'Vegan'    => FoodTypeList(food_type: 'Vegan'),
+                'Desserts' => FoodTypeList(food_type: 'Desserts'),
+                'Drinks'   => FoodTypeList(food_type: 'Drinks'),
+                _          => homePage(bestSellers, recommededItems),
+              },
             ],
           ),
         ],
@@ -219,7 +209,7 @@ Widget homePage(
                       ),
                       Icon(
                         Icons.chevron_right,
-                        color: Color.fromRGBO(57, 49, 47, 1),
+                        color: Color.fromRGBO(233, 83, 34, 1),
                       ),
                     ],
                   ),
