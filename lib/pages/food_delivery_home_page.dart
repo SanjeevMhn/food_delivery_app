@@ -11,6 +11,7 @@ import 'package:food_delivery/widgets/search_input.dart';
 import 'package:food_delivery/widgets/top_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class FoodDeliveryHomePage extends StatefulWidget {
@@ -146,9 +147,8 @@ class _FoodDeliveryHomePageState extends State<FoodDeliveryHomePage> {
                             )
                             .toList(),
                       ),
-                      if (!hasActiveBotMenu) 
-                        SizedBox(height: 10.h),
-                      if(!hasActiveBotMenu)
+                      if (!hasActiveBotMenu) SizedBox(height: 10.h),
+                      if (!hasActiveBotMenu)
                         Divider(color: Color.fromRGBO(233, 83, 34, 1)),
                     ],
                   ),
@@ -229,7 +229,14 @@ Widget homePage(
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: EdgeInsets.only(right: 15.r),
-                          child: BestSellerCard(bestSeller: bestSellers[index]),
+                          child: GestureDetector(
+                            onTap: () {
+                              context.go("/detail");
+                            },
+                            child: BestSellerCard(
+                              bestSeller: bestSellers[index],
+                            ),
+                          ),
                         );
                       },
                     ),
@@ -266,7 +273,12 @@ Widget homePage(
                         ),
                     itemCount: recommededItems.length,
                     itemBuilder: (context, index) {
-                      return RecommededItem(item: recommededItems[index]);
+                      return GestureDetector(
+                        onTap: () {
+                          context.go('/detail');
+                        },
+                        child: RecommededItem(item: recommededItems[index]),
+                      );
                     },
                   ),
                 ],

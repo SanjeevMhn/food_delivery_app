@@ -43,7 +43,7 @@ class ThirtyPercentOffAd extends StatelessWidget {
               child: Image.asset(
                 'assets/images/pizza.png',
                 // width: 130,
-                height: 150,
+                height: 150.h,
                 fit: BoxFit.cover,
               ),
             ),

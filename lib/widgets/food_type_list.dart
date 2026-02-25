@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery/models/food_type.dart';
 import 'package:food_delivery/widgets/food_type_card.dart';
+import 'package:go_router/go_router.dart';
 
 class FoodTypeList extends StatelessWidget {
   final String food_type;
@@ -81,7 +82,12 @@ class FoodTypeList extends StatelessWidget {
               physics: NeverScrollableScrollPhysics(),
               itemCount: foodList.length,
               itemBuilder: (context, index) {
-                return FoodTypeCard(food: foodList[index]);
+                return GestureDetector(
+                  onTap: () {
+                    context.go("/detail");
+                  },
+                  child: FoodTypeCard(food: foodList[index]),
+                );
               },
             ),
           ],
