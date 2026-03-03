@@ -10,7 +10,7 @@ class MainLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: SafeArea(child: navigationShell),
+      body: SafeArea(child: navigationShell,),
       bottomNavigationBar: FoodDeliveryBottomNav(),
     );
   }
