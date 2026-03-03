@@ -141,11 +141,14 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(50.r),
-                    child: AspectRatio(
-                      aspectRatio: 16 / 9,
-                      child: Image.asset(
-                        "assets/images/pizza.png",
-                        fit: BoxFit.cover,
+                    child: Hero(
+                      tag: "food_type_hero",
+                      child: AspectRatio(
+                        aspectRatio: 16 / 9,
+                        child: Image.asset(
+                          "assets/images/pizza.png",
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
@@ -282,7 +285,7 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 30.h,),
+                      SizedBox(height: 30.h),
                       Center(
                         child: FilledButton(
                           style: FilledButton.styleFrom(
@@ -315,7 +318,7 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 30.h,)
+                      SizedBox(height: 30.h),
                     ],
                   ),
                 ],

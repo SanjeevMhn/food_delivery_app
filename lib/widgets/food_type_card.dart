@@ -14,7 +14,10 @@ class FoodTypeCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(50.r),
           child: AspectRatio(
             aspectRatio: 16 / 9,
-            child: Image.asset(food.image, fit: BoxFit.cover),
+            child: Hero(
+              tag: "food_type_hero",
+              child: Image.asset(food.image, fit: BoxFit.cover),
+            ),
           ),
         ),
         SizedBox(height: 8.h),

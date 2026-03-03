@@ -12,11 +12,14 @@ class BestSellerCard extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(25.r)),
-          child: Image.asset(
-            bestSeller.image,
-            fit: BoxFit.cover,
-            width: 75.w,
-            height: 120.h,
+          child: Hero(
+            tag: "food_type_hero",
+            child: Image.asset(
+              bestSeller.image,
+              fit: BoxFit.cover,
+              width: 75.w,
+              height: 120.h,
+            ),
           ),
         ),
         Positioned(
