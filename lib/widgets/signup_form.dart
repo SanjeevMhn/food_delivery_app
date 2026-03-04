@@ -25,7 +25,8 @@ class SignupFormState extends State<SignupForm> {
     );
 
     if (pickedDate != null) {
-      print(pickedDate);
+      String date = pickedDate.toString().split(' ')[0];
+      _dateController.text = date;
     }
   }
 
@@ -177,6 +178,7 @@ class SignupFormState extends State<SignupForm> {
               fontWeight: FontWeight.bold,
             ),
           ),
+          SizedBox(height: 8.h),
           TextFormField(
             keyboardType: .phone,
             decoration: InputDecoration(
@@ -190,7 +192,7 @@ class SignupFormState extends State<SignupForm> {
                 borderRadius: BorderRadius.circular(15.r),
                 borderSide: BorderSide(color: Color(0xFFF3E9B5), width: 1.0),
               ),
-              hintText: "+977",
+              hintText: "98********",
               filled: true,
               fillColor: Color(0xFFF3E9B5),
             ),
@@ -204,6 +206,7 @@ class SignupFormState extends State<SignupForm> {
               fontWeight: FontWeight.bold,
             ),
           ),
+          SizedBox(height: 8.h),
           TextFormField(
             readOnly: true,
             controller: _dateController,
