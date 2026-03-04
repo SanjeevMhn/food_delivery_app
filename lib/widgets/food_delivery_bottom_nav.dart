@@ -12,7 +12,7 @@ class FoodDeliveryBottomNav extends StatelessWidget {
     return SafeArea(
       child: Container(
         padding: EdgeInsets.all(15.r),
-        color: Colors.white,
+        color: Colors.transparent,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(100.r),
           child: BottomNavigationBar(

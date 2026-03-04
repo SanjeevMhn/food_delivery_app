@@ -15,7 +15,11 @@ final GoRouter routes = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/home',
+              path: '/login',
+              builder: (context, state) => const LoginPage(),
+            ),
+            GoRoute(
+              path: '/',
               builder: (context, state) => const FoodDeliveryHomePage(),
             ),
             GoRoute(
@@ -26,6 +30,5 @@ final GoRouter routes = GoRouter(
         ),
       ],
     ),
-    GoRoute(path: "/", builder: (context, state) => const LoginPage()),
   ],
 );
