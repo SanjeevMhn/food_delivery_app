@@ -2,17 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+class SignupForm extends StatefulWidget {
+  const SignupForm({super.key});
 
   @override
-  State<LoginForm> createState() => LoginFormState();
+  State<SignupForm> createState() => SignupFormState();
 }
 
-class LoginFormState extends State<LoginForm> {
+class SignupFormState extends State<SignupForm> {
   final _formKey = GlobalKey<FormState>();
 
   bool showPassword = false;
+
+  final TextEditingController _dateController = TextEditingController();
+
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(3000),
+      initialDate: DateTime.now(),
+    );
+
+    if (pickedDate != null) {
+      print(pickedDate);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +36,33 @@ class LoginFormState extends State<LoginForm> {
       child: Column(
         crossAxisAlignment: .start,
         children: [
+          Text(
+            "Full Name",
+            style: TextStyle(
+              color: Color(0xFF391713),
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 8.h),
+          TextFormField(
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(10.r),
+              floatingLabelBehavior: .never,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15.r),
+                borderSide: BorderSide(color: Color(0xFFF3E9B5), width: 1.0),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15.r),
+                borderSide: BorderSide(color: Color(0xFFF3E9B5), width: 1.0),
+              ),
+              hintText: "Full Name..",
+              filled: true,
+              fillColor: Color(0xFFF3E9B5),
+            ),
+          ),
+          SizedBox(height: 15.h),
           Text(
             "Email",
             style: TextStyle(
@@ -123,27 +165,71 @@ class LoginFormState extends State<LoginForm> {
                         ),
                 ),
               ),
+              SizedBox(height: 15.sp),
             ],
           ),
           SizedBox(height: 15.h),
-          Row(
-            mainAxisAlignment: .end,
-            children: [
-              Text(
-                "Forgot Password",
-                style: TextStyle(
-                  color: Color(0xFFE95322),
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
+          Text(
+            "Mobile Number",
+            style: TextStyle(
+              color: Color(0xFF391713),
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+            ),
           ),
+          TextFormField(
+            keyboardType: .phone,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(10.r),
+              floatingLabelBehavior: .never,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15.r),
+                borderSide: BorderSide(color: Color(0xFFF3E9B5), width: 1.0),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15.r),
+                borderSide: BorderSide(color: Color(0xFFF3E9B5), width: 1.0),
+              ),
+              hintText: "+977",
+              filled: true,
+              fillColor: Color(0xFFF3E9B5),
+            ),
+          ),
+          SizedBox(height: 15.h),
+          Text(
+            "Date of Birth",
+            style: TextStyle(
+              color: Color(0xFF391713),
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextFormField(
+            readOnly: true,
+            controller: _dateController,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(10.r),
+              floatingLabelBehavior: .never,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15.r),
+                borderSide: BorderSide(color: Color(0xFFF3E9B5), width: 1.0),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15.r),
+                borderSide: BorderSide(color: Color(0xFFF3E9B5), width: 1.0),
+              ),
+              hintText: "mm/dd/yyyy",
+              filled: true,
+              fillColor: Color(0xFFF3E9B5),
+            ),
+            onTap: () => _selectDate(context),
+          ),
+
           SizedBox(height: 60.h),
           Center(
             child: InkWell(
-              onTap: (){
-                context.go('/');
+              onTap: () {
+                context.go('/login');
               },
               child: SizedBox(
                 width: 210.w,
@@ -155,7 +241,7 @@ class LoginFormState extends State<LoginForm> {
                   ),
                   child: Center(
                     child: Text(
-                      "Log In",
+                      "Sign Up",
                       style: TextStyle(
                         fontSize: 22.sp,
                         color: Colors.white,
@@ -174,18 +260,18 @@ class LoginFormState extends State<LoginForm> {
               spacing: 5.r,
               children: [
                 Text(
-                  "Don't have an account?",
+                  "Already have an account?",
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w400,
                   ),
                 ),
                 InkWell(
-                  onTap: (){
-                    context.go('/signup');
+                  onTap: () {
+                    context.go('/login');
                   },
                   child: Text(
-                    "Sign Up",
+                    "Log In",
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
