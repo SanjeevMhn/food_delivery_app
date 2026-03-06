@@ -4,14 +4,13 @@ import 'package:go_router/go_router.dart';
 
 class TopMenu extends StatelessWidget {
   final IconData icon;
-  const TopMenu({super.key, required this.icon});
+  final VoidCallback onPressed; 
+  const TopMenu({super.key, required this.icon, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
-        context.go('/login');
-      },
+      onTap: onPressed,
       child: Container(
         padding: EdgeInsets.all(12.r),
         decoration: BoxDecoration(

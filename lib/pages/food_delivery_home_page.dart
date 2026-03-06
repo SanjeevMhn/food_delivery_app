@@ -88,9 +88,24 @@ class _FoodDeliveryHomePageState extends State<FoodDeliveryHomePage> {
                         Row(
                           spacing: 7.r,
                           children: [
-                            TopMenu(icon: Icons.shopping_cart_outlined),
-                            TopMenu(icon: Icons.notifications_none_rounded),
-                            TopMenu(icon: Icons.person_outline),
+                            TopMenu(
+                              icon: Icons.shopping_cart_outlined,
+                              onPressed: () {
+                                Scaffold.of(context).openEndDrawer();
+                              },
+                            ),
+                            TopMenu(
+                              icon: Icons.notifications_none_rounded,
+                              onPressed: () {
+                                context.go('/login');
+                              },
+                            ),
+                            TopMenu(
+                              icon: Icons.person_outline,
+                              onPressed: () {
+                                context.go('/login');
+                              },
+                            ),
                           ],
                         ),
                       ],
