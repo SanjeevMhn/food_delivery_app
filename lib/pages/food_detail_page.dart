@@ -141,14 +141,11 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(50.r),
-                    child: Hero(
-                      tag: "food_type_hero",
-                      child: AspectRatio(
-                        aspectRatio: 16 / 9,
-                        child: Image.asset(
-                          "assets/images/pizza.png",
-                          fit: BoxFit.cover,
-                        ),
+                    child: AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: Image.asset(
+                        "assets/images/pizza.png",
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
