@@ -22,7 +22,7 @@ class _CartDrawerState extends State<CartDrawer> {
       title: 'Cart',
       emptyText: cartData.isEmpty
           ? "Your cart is empty"
-          : "Your cart as ${cartData.length} item${cartData.length > 1 ? 's' : ''}",
+          : "Your cart has ${cartData.length} item${cartData.length > 1 ? 's' : ''}",
       content: cartData.isNotEmpty ? cartList(cartData) : null,
     );
   }
@@ -30,7 +30,13 @@ class _CartDrawerState extends State<CartDrawer> {
 
 Widget cartList(List<CartItemModel> cart) {
   return ListView.separated(
-    separatorBuilder: (context, index) => const Divider(color: Colors.white),
+    separatorBuilder: (context, index) => Column(
+      children: [
+        SizedBox(height: 10.h),
+        Divider(color: Colors.white),
+        SizedBox(height: 10.h),
+      ],
+    ),
     itemCount: cart.length,
     itemBuilder: (context, index) {
       return Row(
@@ -54,15 +60,12 @@ Widget cartList(List<CartItemModel> cart) {
               spacing: 2.r,
               crossAxisAlignment: .start,
               children: [
-                SizedBox(
-                  width: 80.w,
-                  child: Text(
-                    cart[index].name,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+                Text(
+                  cart[index].name,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
                 Text(
