@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:food_delivery/layouts/main_layout.dart';
 import 'package:food_delivery/pages/food_delivery_home_page.dart';
 import 'package:food_delivery/pages/food_detail_page.dart';
@@ -28,8 +29,15 @@ final GoRouter routes = GoRouter(
               builder: (context, state) => const FoodDeliveryHomePage(),
             ),
             GoRoute(
-              path: '/detail',
-              builder: (context, state) => const FoodDetailPage(),
+              path: '/detail/:id',
+              builder: (context, state) {
+                final String? rawId = state.pathParameters['id'];
+                if (rawId != null) {
+                  final int id = int.parse(rawId);  
+                  return FoodDetailPage(id: id);
+                }
+                return Placeholder();
+              },
             ),
           ],
         ),

@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_delivery/models/cart_item_model.dart';
+import 'package:food_delivery/models/food_detail_model.dart';
+import 'package:food_delivery/state/cart_state.dart';
+import 'package:food_delivery/state/foods_state.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class FoodDetailPage extends StatefulWidget {
-  const FoodDetailPage({super.key});
+  final int id;
+  const FoodDetailPage({super.key, required this.id});
 
   @override
   State<FoodDetailPage> createState() => _FoodDetailPageState();
@@ -28,6 +34,10 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    FoodDetailModel foodDetail = context.read<FoodsState>().getFoodById(
+      widget.id,
+    );
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -64,7 +74,7 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                         Row(
                           children: [
                             Text(
-                              "Cheese Pizza",
+                              foodDetail.name,
                               style: TextStyle(
                                 fontSize: 18.sp,
                                 color: Color.fromRGBO(57, 23, 19, 1),
@@ -96,7 +106,7 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                             spacing: 2.r,
                             children: [
                               Text(
-                                "5.0",
+                                foodDetail.ratings.toStringAsFixed(1),
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   color: Colors.white,
@@ -143,10 +153,7 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                     borderRadius: BorderRadius.circular(50.r),
                     child: AspectRatio(
                       aspectRatio: 16 / 9,
-                      child: Image.asset(
-                        "assets/images/pizza.png",
-                        fit: BoxFit.cover,
-                      ),
+                      child: Image.asset(foodDetail.image, fit: BoxFit.cover),
                     ),
                   ),
                   SizedBox(height: 30.h),
@@ -155,7 +162,7 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "\$50.00",
+                        "\$${foodDetail.price.toStringAsFixed(2)}",
                         style: TextStyle(
                           fontSize: 25.sp,
                           fontWeight: FontWeight.w900,
@@ -206,90 +213,50 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Cheese Pizza",
+                        foodDetail.name,
                         style: TextStyle(
                           color: Color.fromRGBO(57, 23, 19, 1),
                           fontWeight: FontWeight.bold,
                           fontSize: 18.sp,
                         ),
                       ),
-                      Text(
-                        "Japan is turning footsteps into electricity...",
-                        style: TextStyle(
-                          color: Color.fromRGBO(57, 23, 19, 1),
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w200,
+                      if (foodDetail.description != null)
+                        Text(
+                          foodDetail.description!,
+                          style: TextStyle(
+                            color: Color.fromRGBO(57, 23, 19, 1),
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w200,
+                          ),
                         ),
-                      ),
                     ],
                   ),
                   SizedBox(height: 30.h),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Toppings",
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          color: Color.fromRGBO(57, 23, 19, 1),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      RadioGroup(
-                        onChanged: (value) {},
-                        child: Column(
-                          children: [
-                            ListTile(
-                              leading: Text(
-                                "Cheese",
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: Color.fromRGBO(57, 23, 19, 1),
-                                ),
-                              ),
-                              trailing: Radio(value: false),
-                            ),
-                            ListTile(
-                              leading: Text(
-                                "Pepperoni",
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: Color.fromRGBO(57, 23, 19, 1),
-                                ),
-                              ),
-                              trailing: Radio(value: false),
-                            ),
-                            ListTile(
-                              leading: Text(
-                                "Mushrooms",
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: Color.fromRGBO(57, 23, 19, 1),
-                                ),
-                              ),
-                              trailing: Radio(value: false),
-                            ),
-                            ListTile(
-                              leading: Text(
-                                "Olive Oil",
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: Color.fromRGBO(57, 23, 19, 1),
-                                ),
-                              ),
-                              trailing: Radio(value: false),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 30.h),
+                      // SizedBox(height: 30.h),
                       Center(
                         child: FilledButton(
                           style: FilledButton.styleFrom(
                             backgroundColor: Color.fromRGBO(233, 83, 34, 1),
                             shape: StadiumBorder(),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<CartState>().addToCart(
+                              CartItemModel(
+                                id: foodDetail.id,
+                                name: foodDetail.name,
+                                ratings: foodDetail.ratings,
+                                image: foodDetail.image,
+                                price: foodDetail.price,
+                                quantity: quantity,
+                              ),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Item added to cart!")),
+                            );
+                          },
                           child: Padding(
                             padding: EdgeInsets.symmetric(vertical: 10.r),
                             child: Row(

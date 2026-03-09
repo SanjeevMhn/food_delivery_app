@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:food_delivery/widgets/CartDrawer.dart';
 import 'package:food_delivery/widgets/food_delivery_bottom_nav.dart';
+import 'package:food_delivery/widgets/main_drawer.dart';
 import 'package:go_router/go_router.dart';
 
 class MainLayout extends StatelessWidget {
@@ -14,7 +14,7 @@ class MainLayout extends StatelessWidget {
       extendBody: true,
       body: SafeArea(child: navigationShell),
       bottomNavigationBar: FoodDeliveryBottomNav(),
-      endDrawer: CartDrawer(),
+      endDrawer: MainDrawer(),
     );
   }
 }

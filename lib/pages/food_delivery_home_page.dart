@@ -1,10 +1,12 @@
 import 'package:food_delivery/models/best_seller.dart';
+import 'package:food_delivery/models/food_detail_model.dart';
 import 'package:food_delivery/models/recommeded_item_model.dart';
 import 'package:food_delivery/state/bot_menu_state.dart';
+import 'package:food_delivery/state/drawer_state.dart';
+import 'package:food_delivery/state/foods_state.dart';
 import 'package:food_delivery/widgets/adverts/thirty_percent_off.dart';
 import 'package:food_delivery/widgets/best_seller_card.dart';
 import 'package:food_delivery/widgets/bot_menu.dart';
-import 'package:food_delivery/models/bot_menu_model.dart';
 import 'package:food_delivery/widgets/food_type_list.dart';
 import 'package:food_delivery/widgets/recommeded_item.dart';
 import 'package:food_delivery/widgets/search_input.dart';
@@ -22,46 +24,13 @@ class FoodDeliveryHomePage extends StatefulWidget {
 }
 
 class _FoodDeliveryHomePageState extends State<FoodDeliveryHomePage> {
-  List<BestSeller> bestSellers = [
-    BestSeller(id: 1, price: 110.35, image: 'assets/images/pancakes.jpg'),
-    BestSeller(id: 2, price: 50.25, image: 'assets/images/chowmein.jpg'),
-    BestSeller(id: 3, price: 12.99, image: 'assets/images/food.jpg'),
-    BestSeller(id: 4, price: 8.25, image: 'assets/images/food_2.jpg'),
-    BestSeller(id: 5, price: 28.25, image: 'assets/images/pizza.png'),
-  ];
-
-  List<RecommededItemModel> recommededItems = [
-    RecommededItemModel(
-      id: 1,
-      image: 'assets/images/rec_1.jpg',
-      price: 12.50,
-      rating: 5.0,
-    ),
-    RecommededItemModel(
-      id: 2,
-      image: 'assets/images/rec_2.jpg',
-      price: 120.10,
-      rating: 4.2,
-    ),
-    RecommededItemModel(
-      id: 3,
-      image: 'assets/images/rec_3.jpg',
-      price: 45.50,
-      rating: 4.8,
-    ),
-    RecommededItemModel(
-      id: 4,
-      image: 'assets/images/rec_4.jpg',
-      price: 25.65,
-      rating: 5.0,
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     final botMenus = context.watch<BotMenuState>().botMenus;
     final activeBotMenu = context.watch<BotMenuState>().currentActiveBotMenu();
     final hasActiveBotMenu = context.watch<BotMenuState>().hasActiveBotMenu();
+
+    final foodList = context.watch<FoodsState>().getFoods;
 
     return SingleChildScrollView(
       child: Column(
@@ -91,19 +60,28 @@ class _FoodDeliveryHomePageState extends State<FoodDeliveryHomePage> {
                             TopMenu(
                               icon: Icons.shopping_cart_outlined,
                               onPressed: () {
+                                context.read<DrawerState>().setDrawerType(
+                                  DrawerType.cart,
+                                );
                                 Scaffold.of(context).openEndDrawer();
                               },
                             ),
                             TopMenu(
                               icon: Icons.notifications_none_rounded,
                               onPressed: () {
-                                context.go('/login');
+                                context.read<DrawerState>().setDrawerType(
+                                  DrawerType.notifications,
+                                );
+                                Scaffold.of(context).openEndDrawer();
                               },
                             ),
                             TopMenu(
                               icon: Icons.person_outline,
                               onPressed: () {
-                                context.go('/login');
+                                context.read<DrawerState>().setDrawerType(
+                                  DrawerType.profile,
+                                );
+                                Scaffold.of(context).openEndDrawer();
                               },
                             ),
                           ],
@@ -176,7 +154,7 @@ class _FoodDeliveryHomePageState extends State<FoodDeliveryHomePage> {
                 'Vegan' => FoodTypeList(food_type: 'Vegan'),
                 'Desserts' => FoodTypeList(food_type: 'Desserts'),
                 'Drinks' => FoodTypeList(food_type: 'Drinks'),
-                _ => homePage(bestSellers, recommededItems),
+                _ => homePage(foodList),
               },
             ],
           ),
@@ -186,10 +164,7 @@ class _FoodDeliveryHomePageState extends State<FoodDeliveryHomePage> {
   }
 }
 
-Widget homePage(
-  List<BestSeller> bestSellers,
-  List<RecommededItemModel> recommededItems,
-) {
+Widget homePage(List<FoodDetailModel> foodList) {
   return Column(
     children: [
       Container(
@@ -240,16 +215,20 @@ Widget homePage(
                     height: 120.h,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: bestSellers.length,
+                      itemCount: foodList.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: EdgeInsets.only(right: 15.r),
                           child: GestureDetector(
                             onTap: () {
-                              context.go("/detail");
+                              context.go("/detail/${foodList[index].id}");
                             },
                             child: BestSellerCard(
-                              bestSeller: bestSellers[index],
+                              bestSeller: BestSeller(
+                                id: foodList[index].id,
+                                price: foodList[index].price,
+                                image: foodList[index].image,
+                              ),
                             ),
                           ),
                         );
@@ -286,13 +265,20 @@ Widget homePage(
                           mainAxisSpacing: 10,
                           childAspectRatio: 1.0,
                         ),
-                    itemCount: recommededItems.length,
+                    itemCount: foodList.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          context.go('/detail');
+                          context.go('/detail/${foodList[index].id}');
                         },
-                        child: RecommededItem(item: recommededItems[index]),
+                        child: RecommededItem(
+                          item: RecommededItemModel(
+                            id: foodList[index].id,
+                            image: foodList[index].image,
+                            price: foodList[index].price,
+                            rating: foodList[index].ratings,
+                          ),
+                        ),
                       );
                     },
                   ),

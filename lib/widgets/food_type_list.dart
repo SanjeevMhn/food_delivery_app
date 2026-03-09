@@ -1,34 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_delivery/models/food_detail_model.dart';
 import 'package:food_delivery/models/food_type.dart';
+import 'package:food_delivery/state/foods_state.dart';
 import 'package:food_delivery/widgets/food_type_card.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class FoodTypeList extends StatelessWidget {
   final String food_type;
-  List<FoodType> foodList = [
-    FoodType(
-      id: 1,
-      name: 'Cheese Pizza',
-      image: 'assets/images/pizza.png',
-      description: 'Cheese Pizza, Japan is turning footsteps into electricity.',
-      rating: 4.8,
-      price: 32.55,
-    ),
-    FoodType(
-      id: 2,
-      name: 'Apple Pancake',
-      image: 'assets/images/pancakes.jpg',
-      description:
-          'Apple Pancake, Japan is turning footsteps into electricity.',
-      rating: 5.0,
-      price: 50.55,
-    ),
-  ];
-  FoodTypeList({super.key, required this.food_type});
+  const FoodTypeList({super.key, required this.food_type});
 
   @override
   Widget build(BuildContext context) {
+    List<FoodDetailModel> foodList = context.read<FoodsState>().getFoods;
+
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.only(
@@ -84,9 +70,18 @@ class FoodTypeList extends StatelessWidget {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    context.go("/detail");
+                    context.go("/detail/${foodList[index].id}");
                   },
-                  child: FoodTypeCard(food: foodList[index]),
+                  child: FoodTypeCard(
+                    food: FoodType(
+                      id: foodList[index].id,
+                      name: foodList[index].name,
+                      image: foodList[index].image,
+                      description: foodList[index].description ?? '',
+                      rating: foodList[index].ratings,
+                      price: foodList[index].price,
+                    ),
+                  ),
                 );
               },
             ),
