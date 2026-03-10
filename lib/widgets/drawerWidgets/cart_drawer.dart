@@ -15,7 +15,7 @@ class CartDrawer extends StatefulWidget {
 class _CartDrawerState extends State<CartDrawer> {
   @override
   Widget build(BuildContext context) {
-    List<CartItemModel> cartData = context.read<CartState>().getCart;
+    List<CartItemModel> cartData = context.watch<CartState>().getCart;
 
     return DrawerLayout(
       icon: Icons.shopping_cart_outlined,
@@ -29,59 +29,238 @@ class _CartDrawerState extends State<CartDrawer> {
 }
 
 Widget cartList(List<CartItemModel> cart) {
-  return ListView.separated(
-    separatorBuilder: (context, index) => Column(
-      children: [
-        SizedBox(height: 10.h),
-        Divider(color: Colors.white),
-        SizedBox(height: 10.h),
-      ],
-    ),
-    itemCount: cart.length,
-    itemBuilder: (context, index) {
-      return Row(
-        mainAxisAlignment: .center,
-        crossAxisAlignment: .center,
-        children: [
-          Container(
-            width: 80.w,
-            height: 80.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.r),
-              image: DecorationImage(
-                image: AssetImage(cart[index].image),
-                fit: .cover,
-              ),
-            ),
+  return Column(
+    children: [
+      Expanded(
+        child: ListView.separated(
+          separatorBuilder: (context, index) => Column(
+            children: [
+              SizedBox(height: 10.h),
+              Divider(color: Colors.white),
+              SizedBox(height: 10.h),
+            ],
           ),
-          SizedBox(width: 10.w),
-          Expanded(
-            child: Column(
-              spacing: 2.r,
-              crossAxisAlignment: .start,
+          itemCount: cart.length,
+          itemBuilder: (context, index) {
+            return Row(
+              mainAxisAlignment: .spaceBetween,
+              crossAxisAlignment: .center,
               children: [
-                Text(
-                  cart[index].name,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                Container(
+                  width: 80.w,
+                  height: 80.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.r),
+                    image: DecorationImage(
+                      image: AssetImage(cart[index].image),
+                      fit: .cover,
+                    ),
                   ),
                 ),
-                Text(
-                  '\$${cart[index].price}',
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.white,
+                SizedBox(width: 10.w),
+                Expanded(
+                  child: Column(
+                    spacing: 2.r,
+                    crossAxisAlignment: .start,
+                    children: [
+                      Text(
+                        cart[index].name,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        '\$${cart[index].price}',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
+                ),
+                Column(
+                  mainAxisAlignment: .end,
+                  crossAxisAlignment: .end,
+                  children: [
+                    IconButton(
+                      padding: .zero,
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          useRootNavigator: true,
+                          useSafeArea: true,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("Remove Item"),
+                              content: Text("Remove item from cart?"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    context.read<CartState>().removeCartItem(
+                                      cart[index],
+                                    );
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('Remove'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      color: Colors.white,
+                      iconSize: 20.sp,
+                      icon: Icon(Icons.delete_rounded),
+                    ),
+                    Row(
+                      mainAxisAlignment: .center,
+                      crossAxisAlignment: .center,
+                      spacing: 8.r,
+                      children: [
+                        SizedBox(
+                          width: 25.w,
+                          height: 25.h,
+                          child: Center(
+                            child: IconButton(
+                              padding: .zero,
+                              icon: Icon(
+                                Icons.remove,
+                                color: Color(0xFFE95322),
+                              ),
+                              style: IconButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                iconSize: 16.sp,
+                                shape: CircleBorder(),
+                              ),
+                              onPressed: () {
+                                context.read<CartState>().decreaseQuantity(
+                                  cart[index],
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                        Consumer<CartState>(
+                          builder: (context, data, child) {
+                            return Text(
+                              '${data.cart[index].quantity}',
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                color: Colors.white,
+                              ),
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          width: 25.w,
+                          height: 25.h,
+                          child: Center(
+                            child: IconButton(
+                              padding: .zero,
+                              icon: Icon(Icons.add, color: Color(0xFFE95322)),
+                              style: IconButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                iconSize: 16.sp,
+                                shape: CircleBorder(),
+                              ),
+                              onPressed: () {
+                                context.read<CartState>().increaseQuantity(
+                                  cart[index],
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ],
-            ),
+            );
+          },
+        ),
+      ),
+      SizedBox(height: 10.h),
+      Divider(color: Colors.white),
+      SizedBox(height: 10.h),
+      Consumer<CartState>(
+        builder: (context, data, child) {
+          return Column(
+            spacing: 8.r,
+            children: [
+              Row(
+                mainAxisAlignment: .spaceBetween,
+                crossAxisAlignment: .center,
+                children: [
+                  Text(
+                    'Subtotal',
+                    style: TextStyle(fontSize: 18.sp, color: Colors.white),
+                  ),
+                  Text(
+                    '\$${data.getSubTotal()}',
+                    style: TextStyle(fontSize: 18.sp, color: Colors.white),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: .spaceBetween,
+                crossAxisAlignment: .center,
+                children: [
+                  Text(
+                    'Delivery',
+                    style: TextStyle(fontSize: 18.sp, color: Colors.white),
+                  ),
+                  Text(
+                    '\$5.00',
+                    style: TextStyle(fontSize: 18.sp, color: Colors.white),
+                  ),
+                ],
+              ),
+              Divider(color: Colors.white),
+              Row(
+                mainAxisAlignment: .spaceBetween,
+                crossAxisAlignment: .center,
+                children: [
+                  Text(
+                    'Total',
+                    style: TextStyle(fontSize: 18.sp, color: Colors.white),
+                  ),
+                  Text(
+                    '\$${data.getSubTotal() + 5.00}',
+                    style: TextStyle(fontSize: 18.sp, color: Colors.white),
+                  ),
+                ],
+              ),
+            ],
+          );
+        },
+      ),
+      SizedBox(height: 25.h),
+      FilledButton(
+        onPressed: () {},
+        style: FilledButton.styleFrom(
+          backgroundColor: Color(0xFFF5CB58),
+          shape: StadiumBorder(),
+        ),
+        child: Text(
+          "Checkout",
+          style: TextStyle(
+            fontSize: 24.sp,
+            color: Color(0xFFE95322),
+            fontWeight: FontWeight.bold,
           ),
-          Spacer(flex: 1),
-        ],
-      );
-    },
+        ),
+      ),
+    ],
   );
 }

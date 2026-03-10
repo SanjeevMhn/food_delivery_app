@@ -2,6 +2,7 @@ import 'package:food_delivery/models/best_seller.dart';
 import 'package:food_delivery/models/food_detail_model.dart';
 import 'package:food_delivery/models/recommeded_item_model.dart';
 import 'package:food_delivery/state/bot_menu_state.dart';
+import 'package:food_delivery/state/cart_state.dart';
 import 'package:food_delivery/state/drawer_state.dart';
 import 'package:food_delivery/state/foods_state.dart';
 import 'package:food_delivery/widgets/adverts/thirty_percent_off.dart';
@@ -55,15 +56,23 @@ class _FoodDeliveryHomePageState extends State<FoodDeliveryHomePage> {
                       children: [
                         SearchInput(),
                         Row(
-                          spacing: 7.r,
+                          spacing: 10.r,
                           children: [
-                            TopMenu(
-                              icon: Icons.shopping_cart_outlined,
-                              onPressed: () {
-                                context.read<DrawerState>().setDrawerType(
-                                  DrawerType.cart,
+                            Consumer<CartState>(
+                              builder: (context, data, child) {
+                                return Badge(
+                                  isLabelVisible: data.cart.isNotEmpty,
+                                  label: Text('${data.cart.length}'),
+                                  child: TopMenu(
+                                    icon: Icons.shopping_cart_outlined,
+                                    onPressed: () {
+                                      context.read<DrawerState>().setDrawerType(
+                                        DrawerType.cart,
+                                      );
+                                      Scaffold.of(context).openEndDrawer();
+                                    },
+                                  ),
                                 );
-                                Scaffold.of(context).openEndDrawer();
                               },
                             ),
                             TopMenu(

@@ -1,7 +1,7 @@
 import 'package:food_delivery/models/food_detail_model.dart';
 
 class CartItemModel extends FoodDetailModel {
-  final int quantity;
+ int quantity;
   CartItemModel({
     required super.id,
     required super.name,

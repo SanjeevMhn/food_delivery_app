@@ -21,7 +21,7 @@ class DrawerLayout extends StatelessWidget {
     return Drawer(
       backgroundColor: const Color(0xFFE95322),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 25.r),
+        padding: EdgeInsets.only(left: 25.r, right: 25.r, bottom: 50.r),
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
@@ -65,6 +65,7 @@ class DrawerLayout extends StatelessWidget {
                       style: TextStyle(color: Colors.white, fontSize: 18.sp),
                     ),
 
+                  SizedBox(height: 15.h),
                 ],
               ),
             ),
@@ -75,6 +76,5 @@ class DrawerLayout extends StatelessWidget {
         ),
       ),
     );
-    
   }
 }
