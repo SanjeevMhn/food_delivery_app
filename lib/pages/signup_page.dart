@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:food_delivery/widgets/login_form.dart';
 import 'package:food_delivery/widgets/signup_form.dart';
 
 class SignupPage extends StatelessWidget {
@@ -42,7 +41,7 @@ class SignupPage extends StatelessWidget {
                   ),
                 ),
                 child: Column(
-                  crossAxisAlignment: .start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SignupForm(),
                   ],

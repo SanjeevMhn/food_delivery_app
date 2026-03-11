@@ -43,8 +43,8 @@ Widget cartList(List<CartItemModel> cart) {
           itemCount: cart.length,
           itemBuilder: (context, index) {
             return Row(
-              mainAxisAlignment: .spaceBetween,
-              crossAxisAlignment: .center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
                   width: 80.w,
@@ -53,7 +53,7 @@ Widget cartList(List<CartItemModel> cart) {
                     borderRadius: BorderRadius.circular(20.r),
                     image: DecorationImage(
                       image: AssetImage(cart[index].image),
-                      fit: .cover,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
@@ -61,7 +61,7 @@ Widget cartList(List<CartItemModel> cart) {
                 Expanded(
                   child: Column(
                     spacing: 2.r,
-                    crossAxisAlignment: .start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         cart[index].name,
@@ -83,11 +83,11 @@ Widget cartList(List<CartItemModel> cart) {
                   ),
                 ),
                 Column(
-                  mainAxisAlignment: .end,
-                  crossAxisAlignment: .end,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     IconButton(
-                      padding: .zero,
+                      padding: EdgeInsets.zero,
                       onPressed: () {
                         showDialog(
                           context: context,
@@ -123,8 +123,8 @@ Widget cartList(List<CartItemModel> cart) {
                       icon: Icon(Icons.delete_rounded),
                     ),
                     Row(
-                      mainAxisAlignment: .center,
-                      crossAxisAlignment: .center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       spacing: 8.r,
                       children: [
                         SizedBox(
@@ -132,7 +132,7 @@ Widget cartList(List<CartItemModel> cart) {
                           height: 25.h,
                           child: Center(
                             child: IconButton(
-                              padding: .zero,
+                              padding: EdgeInsets.zero,
                               icon: Icon(
                                 Icons.remove,
                                 color: Color(0xFFE95322),
@@ -166,7 +166,7 @@ Widget cartList(List<CartItemModel> cart) {
                           height: 25.h,
                           child: Center(
                             child: IconButton(
-                              padding: .zero,
+                              padding: EdgeInsets.zero,
                               icon: Icon(Icons.add, color: Color(0xFFE95322)),
                               style: IconButton.styleFrom(
                                 backgroundColor: Colors.white,
@@ -199,22 +199,22 @@ Widget cartList(List<CartItemModel> cart) {
             spacing: 8.r,
             children: [
               Row(
-                mainAxisAlignment: .spaceBetween,
-                crossAxisAlignment: .center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     'Subtotal',
                     style: TextStyle(fontSize: 18.sp, color: Colors.white),
                   ),
                   Text(
-                    '\$${data.getSubTotal()}',
+                    '\$${data.getSubTotal().toStringAsFixed(2)}',
                     style: TextStyle(fontSize: 18.sp, color: Colors.white),
                   ),
                 ],
               ),
               Row(
-                mainAxisAlignment: .spaceBetween,
-                crossAxisAlignment: .center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     'Delivery',
@@ -228,15 +228,15 @@ Widget cartList(List<CartItemModel> cart) {
               ),
               Divider(color: Colors.white),
               Row(
-                mainAxisAlignment: .spaceBetween,
-                crossAxisAlignment: .center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     'Total',
                     style: TextStyle(fontSize: 18.sp, color: Colors.white),
                   ),
                   Text(
-                    '\$${data.getSubTotal() + 5.00}',
+                    '\$${(data.getSubTotal() + 5.00).toStringAsFixed(2)}',
                     style: TextStyle(fontSize: 18.sp, color: Colors.white),
                   ),
                 ],

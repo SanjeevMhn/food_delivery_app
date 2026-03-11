@@ -19,7 +19,7 @@ class LoginFormState extends State<LoginForm> {
     return Form(
       key: _formKey,
       child: Column(
-        crossAxisAlignment: .start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             "Email",
@@ -33,7 +33,7 @@ class LoginFormState extends State<LoginForm> {
           TextFormField(
             decoration: InputDecoration(
               contentPadding: EdgeInsets.all(10.r),
-              floatingLabelBehavior: .never,
+              floatingLabelBehavior: FloatingLabelBehavior.never,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15.r),
                 borderSide: BorderSide(color: Color(0xFFF3E9B5), width: 1.0),
@@ -81,7 +81,7 @@ class LoginFormState extends State<LoginForm> {
                     right: 50.r,
                     bottom: 10.r,
                   ),
-                  floatingLabelBehavior: .never,
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15.r),
                     borderSide: BorderSide(
@@ -127,7 +127,7 @@ class LoginFormState extends State<LoginForm> {
           ),
           SizedBox(height: 15.h),
           Row(
-            mainAxisAlignment: .end,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
                 "Forgot Password",
@@ -148,7 +148,7 @@ class LoginFormState extends State<LoginForm> {
               child: SizedBox(
                 width: 210.w,
                 child: Container(
-                  padding: .symmetric(vertical: 15.r, horizontal: 15.r),
+                  padding: EdgeInsets.symmetric(vertical: 15.r, horizontal: 15.r),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50.r),
                     color: Color(0xFFE95322),
@@ -170,7 +170,7 @@ class LoginFormState extends State<LoginForm> {
           SizedBox(height: 60.h),
           Center(
             child: Row(
-              mainAxisAlignment: .center,
+              mainAxisAlignment: MainAxisAlignment.center,
               spacing: 5.r,
               children: [
                 Text(
