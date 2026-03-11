@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery/layouts/drawer_layout.dart';
 import 'package:food_delivery/models/cart_item_model.dart';
 import 'package:food_delivery/state/cart_state.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class CartDrawer extends StatefulWidget {
@@ -23,12 +24,12 @@ class _CartDrawerState extends State<CartDrawer> {
       emptyText: cartData.isEmpty
           ? "Your cart is empty"
           : "Your cart has ${cartData.length} item${cartData.length > 1 ? 's' : ''}",
-      content: cartData.isNotEmpty ? cartList(cartData) : null,
+      content: cartData.isNotEmpty ? cartList(cartData, context) : null,
     );
   }
 }
 
-Widget cartList(List<CartItemModel> cart) {
+Widget cartList(List<CartItemModel> cart, BuildContext context) {
   return Column(
     children: [
       Expanded(
@@ -247,7 +248,9 @@ Widget cartList(List<CartItemModel> cart) {
       ),
       SizedBox(height: 25.h),
       FilledButton(
-        onPressed: () {},
+        onPressed: () {
+          context.go("/confirm");
+        },
         style: FilledButton.styleFrom(
           backgroundColor: Color(0xFFF5CB58),
           shape: StadiumBorder(),
@@ -255,12 +258,13 @@ Widget cartList(List<CartItemModel> cart) {
         child: Text(
           "Checkout",
           style: TextStyle(
-            fontSize: 24.sp,
+            fontSize: 20.sp,
             color: Color(0xFFE95322),
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
+      SizedBox(height: 25.h)
     ],
   );
 }
