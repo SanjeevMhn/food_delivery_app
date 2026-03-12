@@ -94,7 +94,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
               ),
             ),
           ),
-
           Expanded(
             child: ListView.separated(
               separatorBuilder: (BuildContext context, int index) => Padding(
