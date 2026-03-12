@@ -249,6 +249,7 @@ Widget cartList(List<CartItemModel> cart, BuildContext context) {
       SizedBox(height: 25.h),
       FilledButton(
         onPressed: () {
+          Navigator.pop(context);
           context.go("/confirm");
         },
         style: FilledButton.styleFrom(
