@@ -141,14 +141,21 @@ class SignupFormState extends State<SignupForm> {
                 borderRadius: BorderRadius.circular(15.r),
                 borderSide: BorderSide(color: Color(0xFFF3E9B5), width: 1.0),
               ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15.r),
+                borderSide: BorderSide(
+                  color: const Color(0xFFC62828),
+                  width: 1.0,
+                ),
+              ),
               hintText: "mm/dd/yyyy",
               filled: true,
               fillColor: Color(0xFFF3E9B5),
               errorStyle: TextStyle(color: Colors.red[800]),
             ),
             onTap: () => _selectDate(context),
-            validator: (value){
-              if(value!.isEmpty){
+            validator: (value) {
+              if (value!.isEmpty) {
                 return 'Date of Birth Required';
               }
               return null;
