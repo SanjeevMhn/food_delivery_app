@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_delivery/models/form_field_model.dart';
+import 'package:food_delivery/widgets/custom_form_field.dart';
 import 'package:go_router/go_router.dart';
 
 class SignupForm extends StatefulWidget {
@@ -14,7 +16,75 @@ class SignupFormState extends State<SignupForm> {
 
   bool showPassword = false;
 
-  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _mobileNumberController = TextEditingController();
+  final TextEditingController _dobController = TextEditingController();
+
+  List<FormFieldModel> get fields => [
+    FormFieldModel(
+      label: 'Full Name',
+      hintText: 'Full Name...',
+      validationFn: (value) {
+        if (value!.isEmpty) {
+          return 'Full Name Required';
+        }
+        return null;
+      },
+      controller: _fullNameController,
+    ),
+    FormFieldModel(
+      label: 'Email',
+      hintText: 'Email...',
+      validationFn: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Email Required';
+        }
+        final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+        if (!emailRegExp.hasMatch(value)) {
+          return 'Invalid Email';
+        }
+        return null;
+      },
+      controller: _emailController,
+    ),
+    FormFieldModel(
+      label: 'Password',
+      hintText: 'Password',
+      validationFn: (value) {
+        if (value!.isEmpty) {
+          return 'Password Required';
+        }
+        if (value.length < 8) {
+          return 'Password must be atleast 8 characters long';
+        }
+        return null;
+      },
+      obscureText: showPassword,
+      toggleObscureText: () {
+        setState(() {
+          showPassword = !showPassword;
+        });
+      },
+      controller: _passwordController,
+    ),
+    FormFieldModel(
+      label: "Mobile Number",
+      hintText: "Mobile Number",
+      validationFn: (value) {
+        if (value!.isEmpty) {
+          return "Mobile Number Required";
+        }
+        if (value.length < 10) {
+          return "Invalid Mobile Number";
+        }
+        return null;
+      },
+      controller: _mobileNumberController,
+      inputType: TextInputType.phone,
+    ),
+  ];
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
@@ -26,7 +96,7 @@ class SignupFormState extends State<SignupForm> {
 
     if (pickedDate != null) {
       String date = pickedDate.toString().split(' ')[0];
-      _dateController.text = date;
+      _dobController.text = date;
     }
   }
 
@@ -37,165 +107,15 @@ class SignupFormState extends State<SignupForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Full Name",
-            style: TextStyle(
-              color: Color(0xFF391713),
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 8.h),
-          TextFormField(
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(10.r),
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.r),
-                borderSide: BorderSide(color: Color(0xFFF3E9B5), width: 1.0),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.r),
-                borderSide: BorderSide(color: Color(0xFFF3E9B5), width: 1.0),
-              ),
-              hintText: "Full Name..",
-              filled: true,
-              fillColor: Color(0xFFF3E9B5),
-            ),
-          ),
-          SizedBox(height: 15.h),
-          Text(
-            "Email",
-            style: TextStyle(
-              color: Color(0xFF391713),
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 8.h),
-          TextFormField(
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(10.r),
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.r),
-                borderSide: BorderSide(color: Color(0xFFF3E9B5), width: 1.0),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.r),
-                borderSide: BorderSide(color: Color(0xFFF3E9B5), width: 1.0),
-              ),
-              hintText: "Email...",
-              filled: true,
-              fillColor: Color(0xFFF3E9B5),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Email Required';
-              }
-
-              final emailRegExp = RegExp(
-                r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-              );
-              if (!emailRegExp.hasMatch(value)) {
-                return 'Invalid Email';
-              }
-              return null;
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            separatorBuilder: (BuildContext context, int index) =>
+                SizedBox(height: 15.h),
+            itemCount: fields.length,
+            itemBuilder: (context, index) {
+              return customFormField(fields[index]);
             },
-          ),
-          SizedBox(height: 15.sp),
-          Text(
-            "Password",
-            style: TextStyle(
-              color: Color(0xFF391713),
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 8.h),
-          Stack(
-            children: [
-              TextFormField(
-                obscureText: !showPassword,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(
-                    top: 10.r,
-                    left: 10.r,
-                    right: 50.r,
-                    bottom: 10.r,
-                  ),
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.r),
-                    borderSide: BorderSide(
-                      color: Color(0xFFF3E9B5),
-                      width: 1.0,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.r),
-                    borderSide: BorderSide(
-                      color: Color(0xFFF3E9B5),
-                      width: 1.0,
-                    ),
-                  ),
-                  hintText: "Password...",
-                  filled: true,
-                  fillColor: Color(0xFFF3E9B5),
-                ),
-              ),
-              Positioned(
-                right: 5,
-                top: 5,
-                child: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      showPassword = !showPassword;
-                    });
-                  },
-                  icon: showPassword == true
-                      ? Icon(
-                          Icons.visibility_outlined,
-                          size: 25.r,
-                          color: Color(0xFFE95322),
-                        )
-                      : Icon(
-                          Icons.visibility_off_outlined,
-                          size: 25.r,
-                          color: Color(0xFFE95322),
-                        ),
-                ),
-              ),
-              SizedBox(height: 15.sp),
-            ],
-          ),
-          SizedBox(height: 15.h),
-          Text(
-            "Mobile Number",
-            style: TextStyle(
-              color: Color(0xFF391713),
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 8.h),
-          TextFormField(
-            keyboardType: TextInputType.phone,
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(10.r),
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.r),
-                borderSide: BorderSide(color: Color(0xFFF3E9B5), width: 1.0),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.r),
-                borderSide: BorderSide(color: Color(0xFFF3E9B5), width: 1.0),
-              ),
-              hintText: "98********",
-              filled: true,
-              fillColor: Color(0xFFF3E9B5),
-            ),
           ),
           SizedBox(height: 15.h),
           Text(
@@ -209,7 +129,7 @@ class SignupFormState extends State<SignupForm> {
           SizedBox(height: 8.h),
           TextFormField(
             readOnly: true,
-            controller: _dateController,
+            controller: _dobController,
             decoration: InputDecoration(
               contentPadding: EdgeInsets.all(10.r),
               floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -224,20 +144,32 @@ class SignupFormState extends State<SignupForm> {
               hintText: "mm/dd/yyyy",
               filled: true,
               fillColor: Color(0xFFF3E9B5),
+              errorStyle: TextStyle(color: Colors.red[800]),
             ),
             onTap: () => _selectDate(context),
+            validator: (value){
+              if(value!.isEmpty){
+                return 'Date of Birth Required';
+              }
+              return null;
+            },
           ),
 
           SizedBox(height: 60.h),
           Center(
             child: InkWell(
               onTap: () {
-                context.go('/login');
+                if (_formKey.currentState!.validate()) {
+                  context.go("/login");
+                }
               },
               child: SizedBox(
                 width: 210.w,
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 15.r, horizontal: 15.r),
+                  padding: EdgeInsets.symmetric(
+                    vertical: 15.r,
+                    horizontal: 15.r,
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50.r),
                     color: Color(0xFFE95322),

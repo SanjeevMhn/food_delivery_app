@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_delivery/models/form_field_model.dart';
+import 'package:food_delivery/widgets/custom_form_field.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginForm extends StatefulWidget {
@@ -11,8 +13,16 @@ class LoginForm extends StatefulWidget {
 
 class LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   bool showPassword = false;
+
+  void toggleObscureText() {
+    setState(() {
+      showPassword = !showPassword;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,108 +31,45 @@ class LoginFormState extends State<LoginForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Email",
-            style: TextStyle(
-              color: Color(0xFF391713),
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 8.h),
-          TextFormField(
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(10.r),
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.r),
-                borderSide: BorderSide(color: Color(0xFFF3E9B5), width: 1.0),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.r),
-                borderSide: BorderSide(color: Color(0xFFF3E9B5), width: 1.0),
-              ),
+          customFormField(
+            FormFieldModel(
+              controller: _emailController,
+              label: "Email",
               hintText: "Email...",
-              filled: true,
-              fillColor: Color(0xFFF3E9B5),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Email Required';
-              }
+              validationFn: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Email Required';
+                }
 
-              final emailRegExp = RegExp(
-                r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-              );
-              if (!emailRegExp.hasMatch(value)) {
-                return 'Invalid Email';
-              }
-              return null;
-            },
+                final emailRegExp = RegExp(
+                  r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+                );
+                if (!emailRegExp.hasMatch(value)) {
+                  return 'Invalid Email';
+                }
+                return null;
+              },
+            ),
           ),
           SizedBox(height: 15.sp),
-          Text(
-            "Password",
-            style: TextStyle(
-              color: Color(0xFF391713),
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
+          customFormField(
+            FormFieldModel(
+              controller: _passwordController,
+              label: "Password",
+              hintText: "Password...",
+              validationFn: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Password Required';
+                }
+
+                if (value.length < 8) {
+                  return 'Password must be atleast 8 characters long';
+                }
+                return null;
+              },
+              obscureText: showPassword,
+              toggleObscureText: toggleObscureText,
             ),
-          ),
-          SizedBox(height: 8.h),
-          Stack(
-            children: [
-              TextFormField(
-                obscureText: !showPassword,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(
-                    top: 10.r,
-                    left: 10.r,
-                    right: 50.r,
-                    bottom: 10.r,
-                  ),
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.r),
-                    borderSide: BorderSide(
-                      color: Color(0xFFF3E9B5),
-                      width: 1.0,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.r),
-                    borderSide: BorderSide(
-                      color: Color(0xFFF3E9B5),
-                      width: 1.0,
-                    ),
-                  ),
-                  hintText: "Password...",
-                  filled: true,
-                  fillColor: Color(0xFFF3E9B5),
-                ),
-              ),
-              Positioned(
-                right: 5,
-                child: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      showPassword = !showPassword;
-                    });
-                  },
-                  icon: showPassword == true
-                      ? Icon(
-                          Icons.visibility_outlined,
-                          size: 25.r,
-                          color: Color(0xFFE95322),
-                        )
-                      : Icon(
-                          Icons.visibility_off_outlined,
-                          size: 25.r,
-                          color: Color(0xFFE95322),
-                        ),
-                ),
-              ),
-            ],
           ),
           SizedBox(height: 15.h),
           Row(
@@ -141,13 +88,18 @@ class LoginFormState extends State<LoginForm> {
           SizedBox(height: 60.h),
           Center(
             child: InkWell(
-              onTap: (){
-                context.go('/');
+              onTap: () {
+                if (_formKey.currentState!.validate()) {
+                  context.go('/');
+                }
               },
               child: SizedBox(
                 width: 210.w,
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 15.r, horizontal: 15.r),
+                  padding: EdgeInsets.symmetric(
+                    vertical: 15.r,
+                    horizontal: 15.r,
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50.r),
                     color: Color(0xFFE95322),
@@ -180,7 +132,7 @@ class LoginFormState extends State<LoginForm> {
                   ),
                 ),
                 InkWell(
-                  onTap: (){
+                  onTap: () {
                     context.go('/signup');
                   },
                   child: Text(
