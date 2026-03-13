@@ -42,6 +42,11 @@ class CartState extends ChangeNotifier {
     }
   }
 
+  void emptyCart(){
+    cart = [];
+    notifyListeners();
+  }
+
   double getSubTotal() {
     return cart.isEmpty
         ? 0.0

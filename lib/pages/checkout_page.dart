@@ -333,7 +333,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 25.r),
                   child: FilledButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<CartState>().emptyCart();
+                      context.go('/confirm_success');
+                    },
                     style: FilledButton.styleFrom(
                       backgroundColor: Color(0xFFFFDECF),
                       shape: StadiumBorder(),

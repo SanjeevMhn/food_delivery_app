@@ -103,7 +103,6 @@ class LoginFormState extends State<LoginForm> {
               ),
               Positioned(
                 right: 5,
-                top: 5,
                 child: IconButton(
                   onPressed: () {
                     setState(() {
