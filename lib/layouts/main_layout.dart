@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery/widgets/food_delivery_bottom_nav.dart';
 import 'package:food_delivery/widgets/main_drawer.dart';
 import 'package:go_router/go_router.dart';
@@ -12,7 +11,8 @@ class MainLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: SafeArea(child: navigationShell),
+      body: navigationShell,
+      backgroundColor: Colors.white,
       bottomNavigationBar: FoodDeliveryBottomNav(),
       endDrawer: MainDrawer(),
     );

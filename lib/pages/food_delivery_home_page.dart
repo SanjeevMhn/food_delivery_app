@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_delivery/layouts/page_layout.dart';
 import 'package:food_delivery/models/best_seller.dart';
 import 'package:food_delivery/models/food_detail_model.dart';
 import 'package:food_delivery/models/recommeded_item_model.dart';
@@ -33,140 +34,112 @@ class _FoodDeliveryHomePageState extends State<FoodDeliveryHomePage> {
 
     final foodList = context.watch<FoodsState>().getFoods;
 
-    return SingleChildScrollView(
-      child: Column(
+    return PageLayout(
+      topSection: Column(
+        spacing: 15.r,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            spacing: 30.r,
             children: [
-              Container(
-                color: Color(0xFFF5CB58),
-                padding: EdgeInsets.only(
-                  top: 50.r,
-                  left: 25.r,
-                  right: 25.r,
-                  bottom: 25.r,
-                ),
-                child: Column(
-                  spacing: 15.r,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      spacing: 30.r,
-                      children: [
-                        SearchInput(),
-                        Row(
-                          spacing: 10.r,
-                          children: [
-                            Consumer<CartState>(
-                              builder: (context, data, child) {
-                                return Badge(
-                                  isLabelVisible: data.cart.isNotEmpty,
-                                  label: Text('${data.cart.length}'),
-                                  child: TopMenu(
-                                    icon: Icons.shopping_cart_outlined,
-                                    onPressed: () {
-                                      context.read<DrawerState>().setDrawerType(
-                                        DrawerType.cart,
-                                      );
-                                      Scaffold.of(context).openEndDrawer();
-                                    },
-                                  ),
-                                );
-                              },
-                            ),
-                            TopMenu(
-                              icon: Icons.notifications_none_rounded,
-                              onPressed: () {
-                                context.read<DrawerState>().setDrawerType(
-                                  DrawerType.notifications,
-                                );
-                                Scaffold.of(context).openEndDrawer();
-                              },
-                            ),
-                            TopMenu(
-                              icon: Icons.person_outline,
-                              onPressed: () {
-                                context.read<DrawerState>().setDrawerType(
-                                  DrawerType.profile,
-                                );
-                                Scaffold.of(context).openEndDrawer();
-                              },
-                            ),
-                          ],
+              SearchInput(),
+              Row(
+                spacing: 10.r,
+                children: [
+                  Consumer<CartState>(
+                    builder: (context, data, child) {
+                      return Badge(
+                        isLabelVisible: data.cart.isNotEmpty,
+                        label: Text('${data.cart.length}'),
+                        child: TopMenu(
+                          icon: Icons.shopping_cart_outlined,
+                          onPressed: () {
+                            context.read<DrawerState>().setDrawerType(
+                              DrawerType.cart,
+                            );
+                            Scaffold.of(context).openEndDrawer();
+                          },
                         ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Good Morning',
-                          style: TextStyle(
-                            fontSize: 30.sp,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          "Rise and shine! It's breakfast time",
-                          style: TextStyle(
-                            fontSize: 15.sp,
-                            color: Color.fromRGBO(233, 83, 34, 1),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                color: Color.fromRGBO(245, 203, 88, 1),
-                child: Container(
-                  padding: EdgeInsets.only(left: 25.r, right: 25.r, top: 30.r),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(50.r),
-                      topRight: Radius.circular(50.r),
-                    ),
-                    color: hasActiveBotMenu
-                        ? Color.fromRGBO(233, 83, 34, 1)
-                        : Colors.white,
+                      );
+                    },
                   ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: botMenus
-                            .map(
-                              (item) => GestureDetector(
-                                onTap: () => context
-                                    .read<BotMenuState>()
-                                    .setActiveBotMenu(item.id),
-                                child: BotMenu(botMenu: item),
-                              ),
-                            )
-                            .toList(),
-                      ),
-                      if (!hasActiveBotMenu) SizedBox(height: 10.h),
-                      if (!hasActiveBotMenu)
-                        Divider(color: Color.fromRGBO(233, 83, 34, 1)),
-                    ],
+                  TopMenu(
+                    icon: Icons.notifications_none_rounded,
+                    onPressed: () {
+                      context.read<DrawerState>().setDrawerType(
+                        DrawerType.notifications,
+                      );
+                      Scaffold.of(context).openEndDrawer();
+                    },
                   ),
-                ),
+                  TopMenu(
+                    icon: Icons.person_outline,
+                    onPressed: () {
+                      context.read<DrawerState>().setDrawerType(
+                        DrawerType.profile,
+                      );
+                      Scaffold.of(context).openEndDrawer();
+                    },
+                  ),
+                ],
               ),
-
-              switch (activeBotMenu) {
-                'Snack' => FoodTypeList(food_type: 'Snack'),
-                'Meal' => FoodTypeList(food_type: 'Meal'),
-                'Vegan' => FoodTypeList(food_type: 'Vegan'),
-                'Desserts' => FoodTypeList(food_type: 'Desserts'),
-                'Drinks' => FoodTypeList(food_type: 'Drinks'),
-                _ => homePage(foodList),
-              },
             ],
           ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Good Morning',
+                style: TextStyle(
+                  fontSize: 30.sp,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "Rise and shine! It's breakfast time",
+                style: TextStyle(
+                  fontSize: 15.sp,
+                  color: Color.fromRGBO(233, 83, 34, 1),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      mainSection: Column(
+        children: [
+          Padding(
+            padding: hasActiveBotMenu
+                ? EdgeInsets.only(left: 20.r, right: 20.r, top: 20.r)
+                : EdgeInsets.only(left: 25.r, right: 25.r, top: 30.r),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: botMenus
+                  .map(
+                    (item) => GestureDetector(
+                      onTap: () => context
+                          .read<BotMenuState>()
+                          .setActiveBotMenu(item.id),
+                      child: BotMenu(botMenu: item),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
+          if (!hasActiveBotMenu) SizedBox(height: 10.h),
+          if (!hasActiveBotMenu) Divider(color: Color.fromRGBO(233, 83, 34, 1)),
+
+          switch (activeBotMenu) {
+            'Snack' => FoodTypeList(food_type: 'Snack'),
+            'Meal' => FoodTypeList(food_type: 'Meal'),
+            'Vegan' => FoodTypeList(food_type: 'Vegan'),
+            'Desserts' => FoodTypeList(food_type: 'Desserts'),
+            'Drinks' => FoodTypeList(food_type: 'Drinks'),
+            _ => homePage(foodList),
+          },
         ],
       ),
     );
@@ -180,10 +153,15 @@ Widget homePage(List<FoodDetailModel> foodList) {
         // color: Color.fromRGBO(233, 83, 34, 1),
         color: Colors.white,
         child: Container(
-          padding: EdgeInsets.only(left: 25.r, right: 25.r, top: 10.r),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(topRight: Radius.circular(50.r)),
+          ),
+          padding: EdgeInsets.only(
+            left: 25.r,
+            right: 25.r,
+            bottom: 25.r,
+            top: 10.r
           ),
           child: Column(
             children: [

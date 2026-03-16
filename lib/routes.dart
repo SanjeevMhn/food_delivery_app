@@ -19,24 +19,18 @@ final GoRouter routes = GoRouter(
       branches: [
         StatefulShellBranch(
           routes: [
-            GoRoute(
-              path: '/login',
-              builder: (context, state) => const LoginPage(),
-            ),
-            GoRoute(
-              path: '/signup',
-              builder: (context, state) => const SignupPage(),
-            ),
+            GoRoute(path: '/login', builder: (context, state) => LoginPage()),
+            GoRoute(path: '/signup', builder: (context, state) => SignupPage()),
             GoRoute(
               path: '/',
-              builder: (context, state) => const FoodDeliveryHomePage(),
+              builder: (context, state) => FoodDeliveryHomePage(),
             ),
             GoRoute(
               path: '/detail/:id',
               builder: (context, state) {
                 final String? rawId = state.pathParameters['id'];
                 if (rawId != null) {
-                  final int id = int.parse(rawId);  
+                  final int id = int.parse(rawId);
                   return FoodDetailPage(id: id);
                 }
                 return Placeholder();
@@ -44,16 +38,16 @@ final GoRouter routes = GoRouter(
             ),
             GoRoute(
               path: '/confirm',
-              builder: (context, state) => const CheckoutPage()
+              builder: (context, state) => CheckoutPage(),
             ),
             GoRoute(
               path: '/confirm_success',
-              builder: (context, state) => const OrderConfirmedPage() 
+              builder: (context, state) => OrderConfirmedPage(),
             ),
             GoRoute(
               path: '/favorite',
-              builder: (context, state) => const FavoritePage() 
-            )
+              builder: (context, state) => FavoritePage(),
+            ),
           ],
         ),
       ],
