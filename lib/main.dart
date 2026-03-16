@@ -1,9 +1,10 @@
-import 'package:food_delivery/routes.dart';
-import 'package:food_delivery/state/bot_menu_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_delivery/routes.dart';
+import 'package:food_delivery/state/bot_menu_state.dart';
 import 'package:food_delivery/state/cart_state.dart';
 import 'package:food_delivery/state/drawer_state.dart';
+import 'package:food_delivery/state/favorite_state.dart';
 import 'package:food_delivery/state/foods_state.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +12,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => FavoriteState()),
         ChangeNotifierProvider(create: (_) => CartState()),
         ChangeNotifierProvider(create: (_) => FoodsState()),
         ChangeNotifierProvider(create: (_) => BotMenuState()),

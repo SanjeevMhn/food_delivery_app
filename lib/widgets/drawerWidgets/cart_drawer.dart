@@ -72,14 +72,6 @@ Widget cartList(List<CartItemModel> cart, BuildContext context) {
                           color: Colors.white,
                         ),
                       ),
-                      Text(
-                        '\$${cart[index].price}',
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white,
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -87,42 +79,57 @@ Widget cartList(List<CartItemModel> cart, BuildContext context) {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    IconButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          useRootNavigator: true,
-                          useSafeArea: true,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text("Remove Item"),
-                              content: Text("Remove item from cart?"),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    context.read<CartState>().removeCartItem(
-                                      cart[index],
-                                    );
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text('Remove'),
-                                ),
-                              ],
+                    SizedBox(
+                      width: 25.w,
+                      height: 25.h,
+                      child: Center(
+                        child: IconButton(
+                          color: Colors.white,
+                          icon: Icon(Icons.delete_rounded),
+                          padding: EdgeInsets.zero,
+                          iconSize: 16.sp,
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              useRootNavigator: true,
+                              useSafeArea: true,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Remove Item"),
+                                  content: Text("Remove item from cart?"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        context
+                                            .read<CartState>()
+                                            .removeCartItem(cart[index]);
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('Remove'),
+                                    ),
+                                  ],
+                                );
+                              },
                             );
                           },
-                        );
-                      },
-                      color: Colors.white,
-                      iconSize: 20.sp,
-                      icon: Icon(Icons.delete_rounded),
+                        ),
+                      ),
                     ),
+                    Text(
+                      '\$${cart[index].price}',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 5.h,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -265,7 +272,7 @@ Widget cartList(List<CartItemModel> cart, BuildContext context) {
           ),
         ),
       ),
-      SizedBox(height: 25.h)
+      SizedBox(height: 25.h),
     ],
   );
 }

@@ -128,6 +128,7 @@ class SignupFormState extends State<SignupForm> {
           ),
           SizedBox(height: 8.h),
           TextFormField(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             readOnly: true,
             controller: _dobController,
             decoration: InputDecoration(

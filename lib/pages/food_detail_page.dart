@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery/models/cart_item_model.dart';
 import 'package:food_delivery/models/food_detail_model.dart';
 import 'package:food_delivery/state/cart_state.dart';
+import 'package:food_delivery/state/favorite_state.dart';
 import 'package:food_delivery/state/foods_state.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +38,9 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
     FoodDetailModel foodDetail = context.read<FoodsState>().getFoodById(
       widget.id,
     );
-
+    bool checkIfFavorite = context.watch<FavoriteState>().checkIfFavorite(
+      foodDetail,
+    );
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -81,14 +84,6 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                               ),
                             ),
                             SizedBox(width: 15.w),
-                            Container(
-                              width: 8.w,
-                              height: 8.h,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color.fromRGBO(233, 83, 34, 1),
-                              ),
-                            ),
                           ],
                         ),
                         Container(
@@ -124,14 +119,40 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                     ),
                   ],
                 ),
-
-                Container(
-                  padding: EdgeInsets.all(10.r),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color.fromRGBO(233, 83, 34, 1),
-                  ),
-                  child: Icon(Icons.favorite, color: Colors.white, size: 18.sp),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 8.r,
+                  children: [
+                    if (checkIfFavorite)
+                      Container(
+                        width: 8.w,
+                        height: 8.h,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color.fromRGBO(233, 83, 34, 1),
+                        ),
+                      ),
+                    IconButton(
+                      padding: EdgeInsets.all(10.r),
+                      style: IconButton.styleFrom(
+                        backgroundColor: Color.fromRGBO(233, 83, 34, 1),
+                      ),
+                      icon: Icon(
+                        Icons.favorite,
+                        color: Colors.white,
+                        size: 18.sp,
+                      ),
+                      onPressed: () {
+                        String message = context.read<FavoriteState>().toggleFavorite(foodDetail);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(message),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -254,7 +275,10 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                               ),
                             );
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Item added to cart!")),
+                              SnackBar(
+                                content: Text("Item added to cart!"),
+                                duration: Duration(seconds: 2),
+                              ),
                             );
                           },
                           child: Padding(

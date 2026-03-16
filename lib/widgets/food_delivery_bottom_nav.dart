@@ -17,8 +17,18 @@ class FoodDeliveryBottomNav extends StatelessWidget {
           borderRadius: BorderRadius.circular(100.r),
           child: BottomNavigationBar(
             onTap: (int index) {
-              context.read<BotMenuState>().resetActiveBotMenu();
-              context.go("/");
+              switch (index) {
+                case 0:
+                  context.read<BotMenuState>().resetActiveBotMenu();
+                  context.go("/");
+                  break;
+                case 2:
+                  context.read<BotMenuState>().resetActiveBotMenu();
+                  context.go("/favorite");
+                default:
+                  context.read<BotMenuState>().resetActiveBotMenu();
+                  context.go("/");
+              }
             },
             type: BottomNavigationBarType.fixed,
             backgroundColor: Color.fromRGBO(233, 83, 34, 1),

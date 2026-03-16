@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery/models/best_seller.dart';
 import 'package:food_delivery/models/food_detail_model.dart';
 import 'package:food_delivery/models/recommeded_item_model.dart';
@@ -12,8 +14,6 @@ import 'package:food_delivery/widgets/food_type_list.dart';
 import 'package:food_delivery/widgets/recommeded_item.dart';
 import 'package:food_delivery/widgets/search_input.dart';
 import 'package:food_delivery/widgets/top_menu.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +39,7 @@ class _FoodDeliveryHomePageState extends State<FoodDeliveryHomePage> {
           Column(
             children: [
               Container(
-                color: Color.fromRGBO(245, 203, 88, 1),
+                color: Color(0xFFF5CB58),
                 padding: EdgeInsets.only(
                   top: 50.r,
                   left: 25.r,
