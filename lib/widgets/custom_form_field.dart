@@ -18,7 +18,7 @@ Widget customFormField(FormFieldModel model) {
       TextFormField(
         controller: model.controller,
         keyboardType: model.inputType ?? TextInputType.text,
-        obscureText: model.obscureText != null ? model.obscureText! : false,
+        obscureText: model.obscureText != null ? !model.obscureText! : false,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.all(10.r),
           floatingLabelBehavior: FloatingLabelBehavior.never,
