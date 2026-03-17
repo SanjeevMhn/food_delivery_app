@@ -72,6 +72,7 @@ class _MainLayoutState extends State<MainLayout> {
       body: widget.navigationShell,
       backgroundColor: Colors.white,
       bottomNavigationBar: FoodDeliveryBottomNav(),
+      endDrawerEnableOpenDragGesture: false,
       endDrawer: MainDrawer(),
     );
   }
