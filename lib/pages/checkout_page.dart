@@ -224,109 +224,135 @@ class _CheckoutPageState extends State<CheckoutPage> {
               );
             },
           ),
-      
-          Container(
-            color: Colors.white,
-            padding: EdgeInsets.symmetric(horizontal: 25.r),
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 10.r),
-                  child: Divider(color: Color(0xFFFFD8C7)),
-                ),
-                Consumer<CartState>(
-                  builder: (BuildContext context, data, Widget? child) {
-                    return Column(
-                      spacing: 8.r,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Subtotal",
-                              style: TextStyle(
-                                color: Color(0xFF391713),
-                                fontSize: 22.sp,
+
+          cartItems.isNotEmpty
+              ? Container(
+                  color: Colors.white,
+                  padding: EdgeInsets.symmetric(horizontal: 25.r),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 10.r),
+                        child: Divider(color: Color(0xFFFFD8C7)),
+                      ),
+                      Consumer<CartState>(
+                        builder: (BuildContext context, data, Widget? child) {
+                          return Column(
+                            spacing: 8.r,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Subtotal",
+                                    style: TextStyle(
+                                      color: Color(0xFF391713),
+                                      fontSize: 22.sp,
+                                    ),
+                                  ),
+                                  Text(
+                                    '\$${data.getSubTotal().toStringAsFixed(2)}',
+                                    style: TextStyle(
+                                      color: Color(0xFF391713),
+                                      fontSize: 22.sp,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            Text(
-                              '\$${data.getSubTotal().toStringAsFixed(2)}',
-                              style: TextStyle(
-                                color: Color(0xFF391713),
-                                fontSize: 22.sp,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Delivery",
+                                    style: TextStyle(
+                                      color: Color(0xFF391713),
+                                      fontSize: 22.sp,
+                                    ),
+                                  ),
+                                  Text(
+                                    '\$5.00',
+                                    style: TextStyle(
+                                      color: Color(0xFF391713),
+                                      fontSize: 22.sp,
+                                    ),
+                                  ),
+                                ],
                               ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 10.r),
+                                child: Divider(color: Color(0xFFFFD8C7)),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Total",
+                                    style: TextStyle(
+                                      color: Color(0xFF391713),
+                                      fontSize: 22.sp,
+                                    ),
+                                  ),
+                                  Text(
+                                    '\$${(data.getSubTotal() + 5.00).toStringAsFixed(2)}',
+                                    style: TextStyle(
+                                      color: Color(0xFF391713),
+                                      fontSize: 22.sp,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 25.r),
+                        child: FilledButton(
+                          onPressed: () {
+                            context.read<CartState>().emptyCart();
+                            context.go('/confirm_success');
+                          },
+                          style: FilledButton.styleFrom(
+                            backgroundColor: Color(0xFFFFDECF),
+                            shape: StadiumBorder(),
+                          ),
+                          child: Text(
+                            "Place Order",
+                            style: TextStyle(
+                              color: Color(0xFFE95322),
+                              fontSize: 24.sp,
                             ),
-                          ],
+                          ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Delivery",
-                              style: TextStyle(
-                                color: Color(0xFF391713),
-                                fontSize: 22.sp,
-                              ),
-                            ),
-                            Text(
-                              '\$5.00',
-                              style: TextStyle(
-                                color: Color(0xFF391713),
-                                fontSize: 22.sp,
-                              ),
-                            ),
-                          ],
+                      ),
+                    ],
+                  ),
+                )
+              : Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 25.r),
+                    child: FilledButton(
+                      onPressed: () {
+                        context.go('/');
+                      },
+                      style: FilledButton.styleFrom(
+                        backgroundColor: Color(0xFFFFDECF),
+                        shape: StadiumBorder(),
+                      ),
+                      child: Text(
+                        "Go Home",
+                        style: TextStyle(
+                          color: Color(0xFFE95322),
+                          fontSize: 24.sp,
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10.r),
-                          child: Divider(color: Color(0xFFFFD8C7)),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Total",
-                              style: TextStyle(
-                                color: Color(0xFF391713),
-                                fontSize: 22.sp,
-                              ),
-                            ),
-                            Text(
-                              '\$${(data.getSubTotal() + 5.00).toStringAsFixed(2)}',
-                              style: TextStyle(
-                                color: Color(0xFF391713),
-                                fontSize: 22.sp,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    );
-                  },
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 25.r),
-                  child: FilledButton(
-                    onPressed: () {
-                      context.read<CartState>().emptyCart();
-                      context.go('/confirm_success');
-                    },
-                    style: FilledButton.styleFrom(
-                      backgroundColor: Color(0xFFFFDECF),
-                      shape: StadiumBorder(),
-                    ),
-                    child: Text(
-                      "Place Order",
-                      style: TextStyle(
-                        color: Color(0xFFE95322),
-                        fontSize: 24.sp,
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
         ],
       ),
     );
