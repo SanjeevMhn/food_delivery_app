@@ -34,6 +34,10 @@ Widget customFormField(FormFieldModel model) {
             borderRadius: BorderRadius.circular(15.r),
             borderSide: BorderSide(color: const Color(0xFFC62828), width: 1.0),
           ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15.r),
+            borderSide: BorderSide(color: const Color(0xFFC62828), width: 1.0),
+          ),
           errorStyle: TextStyle(color: Colors.red[800]),
           hintText: model.hintText,
           filled: true,
