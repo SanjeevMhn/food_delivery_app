@@ -10,13 +10,16 @@ class BestSellerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(25.r)),
-          child: Image.asset(
-            bestSeller.image,
-            fit: BoxFit.cover,
-            width: 75.w,
-            height: 120.h,
+        Hero(
+          tag: 'bestseller-${bestSeller.id}',
+          child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(25.r)),
+            child: Image.asset(
+              bestSeller.image,
+              fit: BoxFit.cover,
+              width: 75.w,
+              height: 120.h,
+            ),
           ),
         ),
         Positioned(

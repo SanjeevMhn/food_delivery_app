@@ -208,7 +208,7 @@ Widget homePage(List<FoodDetailModel> foodList) {
                           padding: EdgeInsets.only(right: 15.r),
                           child: GestureDetector(
                             onTap: () {
-                              context.go("/detail/${foodList[index].id}");
+                              context.go("/detail/${foodList[index].id}/bestseller");
                             },
                             child: BestSellerCard(
                               bestSeller: BestSeller(
@@ -256,7 +256,7 @@ Widget homePage(List<FoodDetailModel> foodList) {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          context.go('/detail/${foodList[index].id}');
+                          context.go('/detail/${foodList[index].id}/recommended');
                         },
                         child: RecommededItem(
                           item: RecommededItemModel(

@@ -26,12 +26,13 @@ final GoRouter routes = GoRouter(
               builder: (context, state) => FoodDeliveryHomePage(),
             ),
             GoRoute(
-              path: '/detail/:id',
+              path: '/detail/:id/:source',
               builder: (context, state) {
                 final String? rawId = state.pathParameters['id'];
-                if (rawId != null) {
+                final String? source = state.pathParameters['source'];
+                if (rawId != null && source != null) {
                   final int id = int.parse(rawId);
-                  return FoodDetailPage(id: id);
+                  return FoodDetailPage(id: id, source: source,);
                 }
                 return Placeholder();
               },

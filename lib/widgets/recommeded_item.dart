@@ -10,14 +10,13 @@ class RecommededItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25.r),
-            image: DecorationImage(
-              image: AssetImage(item.image),
-              fit: BoxFit.cover,
+        AspectRatio(
+          aspectRatio: 1 / 1,
+          child: Hero(
+            tag: 'recommended-${item.id}',
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(25.r),
+              child: Image.asset(item.image, fit: BoxFit.cover),
             ),
           ),
         ),
