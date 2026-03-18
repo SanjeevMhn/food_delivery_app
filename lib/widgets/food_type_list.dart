@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery/models/food_detail_model.dart';
 import 'package:food_delivery/models/food_type.dart';
+import 'package:food_delivery/state/bot_menu_state.dart';
 import 'package:food_delivery/state/foods_state.dart';
 import 'package:food_delivery/widgets/food_type_card.dart';
 import 'package:go_router/go_router.dart';
@@ -70,13 +71,26 @@ class FoodTypeList extends StatelessWidget {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    context.go("/detail/${foodList[index].id}");
+                    context.read<BotMenuState>().resetActiveBotMenu();
+                    context.go("/detail/${foodList[index].id}/foodtype");
                   },
                   child: FoodTypeCard(
                     food: FoodType(
                       id: foodList[index].id,
                       name: foodList[index].name,
-                      image: foodList[index].image,
+                      image: Hero(
+                        tag: 'foodtype-${foodList[index].id}',
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50.r),
+                          child: AspectRatio(
+                            aspectRatio: 16 / 9,
+                            child: Image.asset(
+                              foodList[index].image,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
                       description: foodList[index].description ?? '',
                       rating: foodList[index].ratings,
                       price: foodList[index].price,

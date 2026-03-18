@@ -10,13 +10,7 @@ class FoodTypeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(50.r),
-          child: AspectRatio(
-            aspectRatio: 16 / 9,
-            child: Image.asset(food.image, fit: BoxFit.cover),
-          ),
-        ),
+        food.image,
         SizedBox(height: 8.h),
         Column(
           children: [

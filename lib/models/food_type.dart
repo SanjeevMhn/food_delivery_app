@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
+
 class FoodType {
   final int id;
   final String name;
-  final String image;
+  final Widget image;
   final String description;
   final double rating;
   final double price;
