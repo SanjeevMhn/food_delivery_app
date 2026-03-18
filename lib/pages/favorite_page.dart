@@ -93,7 +93,7 @@ class FavoritePage extends StatelessWidget {
                         final item = favorites[index];
                         return InkWell(
                           onTap: () {
-                            context.go('/detail/${item.id}');
+                            context.go('/detail/${item.id}/recommended');
                           },
                           child: RecommededItem(
                             item: RecommededItemModel(
